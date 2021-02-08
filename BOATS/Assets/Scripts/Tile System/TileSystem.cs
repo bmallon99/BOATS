@@ -7,8 +7,7 @@ using System.Linq;
 public class TileSystem : MonoBehaviour
 {
     public GameObject prefab;
-    public Tile fireTile;
-    public Tile originalTile;
+    private List<GameObject> _allBoats;
     private TileOccupier[,] _tileArray;
     private Tilemap _tilemap;
     private Vector2Int[] _selectedTiles = new Vector2Int[0];
@@ -18,6 +17,7 @@ public class TileSystem : MonoBehaviour
     {
         _tileArray = new TileOccupier[TileConstants.TileMapWidth, TileConstants.TileMapHeight];
         _tilemap = GetComponent<Tilemap>();
+        _allBoats = new List<GameObject>();
     }
 
 
@@ -35,6 +35,7 @@ public class TileSystem : MonoBehaviour
             {
                 GameObject newShip = Instantiate(boat, boatPosition, Quaternion.Euler(Vector3.back * (int)occupier.rotation));
                 TileOccupier newShipOccupier = newShip.GetComponent<TileOccupier>();
+                StartCoroutine(AttackCoroutine(newShip));
 
                 foreach (Vector2Int tile in occupyingTiles)
                 {
@@ -130,11 +131,12 @@ public class TileSystem : MonoBehaviour
         StartCoroutine(FireCoroutine(tiles));
     }
 
-    IEnumerator AttackCoroutine()
+    IEnumerator AttackCoroutine(GameObject boat)
     {
-        //[boat].GetComponent<Shoot>().Fire_straight_line();
+        yield return new WaitForSeconds(1);
+        boat.GetComponent<Shoot>().Fire_straight_line();
         yield return new WaitForSeconds(5);
-        StartCoroutine(AttackCoroutine());
+        StartCoroutine(AttackCoroutine(boat));
     }
 
     IEnumerator FireCoroutine(Vector2Int[] tiles)
@@ -143,7 +145,7 @@ public class TileSystem : MonoBehaviour
         {
             if (IsTilePointInBounds(location))
             {
-                _tilemap.SetTile(new Vector3Int(location.x, location.y, 0), fireTile);
+                _tilemap.SetColor(new Vector3Int(location.x, location.y, 0), Color.yellow);
             }
         }
         yield return new WaitForSeconds(0.5f);
@@ -151,7 +153,7 @@ public class TileSystem : MonoBehaviour
         {
             if (IsTilePointInBounds(location))
             {
-                _tilemap.SetTile(new Vector3Int(location.x, location.y, 0), originalTile);
+                _tilemap.SetColor(new Vector3Int(location.x, location.y, 0), Color.white);
             }
         }
     }
