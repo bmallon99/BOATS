@@ -7,6 +7,7 @@ using UnityEngine.InputSystem;
 public class PlayerControls : MonoBehaviour
 {
     public GameObject heldObject;
+    public bool holding;
 
     private TileSystem _tileSystem;
 
@@ -16,6 +17,7 @@ public class PlayerControls : MonoBehaviour
     void Start()
     {
         _tileSystem = FindObjectOfType<TileSystem>();
+        holding = false;
     }
 
     // Update is called once per frame
@@ -27,7 +29,7 @@ public class PlayerControls : MonoBehaviour
     public void OnMouseMoved(InputValue positionValue)
     {
         // "Ghost" ship underneath the player's mouse when selected to place
-        if (heldObject != null)
+        if (holding)
         {
             Vector2 position = positionValue.Get<Vector2>();
             Vector3 worldPosition = Camera.main.ScreenToWorldPoint(position);
@@ -43,11 +45,14 @@ public class PlayerControls : MonoBehaviour
     public void OnPrimaryClick()
     {
         // Ship Placement
-        if (heldObject != null)
+        if (holding)
         {
             Vector2Int tilePosition = _tileSystem.TranslateCoordinatesToTile(worldMousePosition);
-
-            _tileSystem.PlaceShip(heldObject, tilePosition);
+            if (_tileSystem.PlaceShip(heldObject, tilePosition))
+            {
+                holding = false;
+                Destroy(heldObject);
+            }
             _tileSystem.SelectTiles(new Vector2Int[0]);
         }
     }
@@ -55,7 +60,7 @@ public class PlayerControls : MonoBehaviour
     public void OnSecondaryClick()
     {
         // Rotate the ship
-        if (heldObject != null)
+        if (holding)
         {
             TileOccupier occupier = heldObject.GetComponent<TileOccupier>();
             occupier.rotation = (OccupierRotation) (((int)occupier.rotation + 90) % 360);
