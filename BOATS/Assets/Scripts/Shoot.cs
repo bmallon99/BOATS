@@ -22,7 +22,7 @@ public class Shoot : MonoBehaviour
         for (int gun = 0; gun < _boatTileInfo.tilesWide; gun++)
         {
             Vector2Int[] firingRange = new Vector2Int[range];
-            Vector2Int baseLocation = (Vector2Int)_tileGrid.TranslateCoordinatesToTile(transform.position);
+            Vector2Int baseLocation = (Vector2Int)_tileGrid.WorldToTilePoint(transform.position);
             for (int i=0; i<range; i++)
             {
                 switch (_boatTileInfo.rotation)
