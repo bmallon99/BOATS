@@ -15,7 +15,6 @@ public class TileSystem : MonoBehaviour
         _tileArray = new TileOccupier[TileConstants.TileMapWidth, TileConstants.TileMapHeight];
         _tilemap = GetComponent<Tilemap>();
 
-        PlaceShip(prefab, new Vector2Int(2, 2));
     }
 
     // Update is called once per frame
@@ -83,19 +82,11 @@ public class TileSystem : MonoBehaviour
 
     public Vector3 TranslateTileToCoordinates(Vector2Int tileCoordinate)
     {
-        Vector3 worldCoordinates = _tilemap.layoutGrid.CellToWorld(new Vector3Int(tileCoordinate.x, tileCoordinate.y, 0));
-
-        // Adjust so it's visible (in front of the tilemap)
-        worldCoordinates.z = -1;
-        return worldCoordinates;
+        return _tilemap.layoutGrid.CellToWorld(new Vector3Int(tileCoordinate.x, tileCoordinate.y, 0));
     }
 
-    public Vector3Int TranslateCoordinatesToTile(Vector3 worldCoordinate)
+    public Vector2Int TranslateCoordinatesToTile(Vector3 worldCoordinate)
     {
-        Vector3Int tileCoordinates = _tilemap.layoutGrid.WorldToCell(worldCoordinate);
-
-        // Adjust so it's visible (in front of the tilemap)
-        // worldCoordinates.z = -1;
-        return tileCoordinates;
+        return (Vector2Int) _tilemap.layoutGrid.WorldToCell(worldCoordinate);
     }
 }
