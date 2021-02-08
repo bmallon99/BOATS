@@ -5,10 +5,30 @@ using System.Collections.Generic;
 
 public class ShipMenuSelector : MonoBehaviour
 {
+    private PlayerControls player;
+    private GameObject myShip;
+    void Start()
+    {
+        player = Camera.main.GetComponent<PlayerControls>();
+    }
+    
     public void HoldShip(GameObject shipPrefab)
     {
-        PlayerControls player = Camera.main.GetComponent<PlayerControls>();
-        player.heldObject = Instantiate(shipPrefab, player.worldMousePosition, new Quaternion());
-        player.holding = true;
+        bool differentShip = myShip != player.heldObject;
+        if (!player.holding || differentShip)
+        {
+            if (differentShip)
+            {
+                Destroy(player.heldObject);
+            }
+            myShip = Instantiate(shipPrefab, player.worldMousePosition, new Quaternion());
+            player.heldObject = myShip;
+            player.holding = true;    
+        }
+        else
+        {
+            Destroy(myShip);
+            player.holding = false;
+        }
     }
 }
