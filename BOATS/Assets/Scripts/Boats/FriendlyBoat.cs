@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TileSystem : MonoBehaviour
+public abstract class FriendlyBoat : MonoBehaviour
 {
+    public GameObject prefab;
     // Start is called before the first frame update
     void Start()
     {
