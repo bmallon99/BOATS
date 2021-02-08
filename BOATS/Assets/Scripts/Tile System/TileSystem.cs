@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using System.Linq;
 
 public class TileSystem : MonoBehaviour
 {
@@ -15,7 +16,6 @@ public class TileSystem : MonoBehaviour
     {
         _tileArray = new TileOccupier[TileConstants.TileMapWidth, TileConstants.TileMapHeight];
         _tilemap = GetComponent<Tilemap>();
-
     }
 
     // Update is called once per frame
@@ -96,22 +96,29 @@ public class TileSystem : MonoBehaviour
 
     public void SelectTiles(Vector2Int[] tiles)
     {
-        foreach (Vector2Int tile in _selectedTiles)
+        // Unselect the old tiles
+        if (_selectedTiles != null)
         {
-            if (IsTilePointInBounds(tile))
+            foreach (Vector2Int tile in _selectedTiles)
             {
-                _tilemap.SetColor(new Vector3Int(tile.x, tile.y, 0), Color.white);
+                if (IsTilePointInBounds(tile))
+                {
+                    _tilemap.SetColor(new Vector3Int(tile.x, tile.y, 0), Color.white);
+                }
             }
         }
 
         _selectedTiles = tiles;
 
-        foreach (Vector2Int tile in tiles)
+        // Check if new tiles are valid
+        Vector2Int[] tilesInBounds = tiles.Where(tile => IsTilePointInBounds(tile)).ToArray();
+        Color selectionColor = (tiles.Length == tilesInBounds.Length) && TilesAreEmpty(tiles) ? Color.green : Color.red;
+
+        // Set appropriate color for new tiles
+        foreach (Vector2Int tile in tilesInBounds)
         {
-            if (IsTilePointInBounds(tile))
-            {
-                _tilemap.SetColor(new Vector3Int(tile.x, tile.y, 0), Color.green);
-            }
+            _tilemap.SetTileFlags(new Vector3Int(tile.x, tile.y, 0), TileFlags.None);
+            _tilemap.SetColor(new Vector3Int(tile.x, tile.y, 0), selectionColor);
         }
     }
 }

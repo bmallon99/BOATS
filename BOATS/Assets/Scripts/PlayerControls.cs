@@ -33,6 +33,7 @@ public class PlayerControls : MonoBehaviour
             Vector3 worldPosition = Camera.main.ScreenToWorldPoint(position);
             heldObject.transform.position = new Vector3(worldPosition.x, worldPosition.y, -1);
 
+            // Update Selected Tiles
             Vector2Int tilePosition = _tileSystem.TranslateCoordinatesToTile(worldPosition);
             TileOccupier occupier = heldObject.GetComponent<TileOccupier>();
             _tileSystem.SelectTiles(occupier.GetTilesOccupied(tilePosition));
@@ -44,11 +45,10 @@ public class PlayerControls : MonoBehaviour
         // Ship Placement
         if (heldObject != null)
         {
-            Vector2 position = Pointer.current.position.ReadValue();
-            Vector3 worldPosition = Camera.main.ScreenToWorldPoint(position);
-            Vector2Int tilePosition = _tileSystem.TranslateCoordinatesToTile(worldPosition);
+            Vector2Int tilePosition = _tileSystem.TranslateCoordinatesToTile(worldMousePosition);
 
             _tileSystem.PlaceShip(heldObject, tilePosition);
+            _tileSystem.SelectTiles(new Vector2Int[0]);
         }
     }
 
@@ -60,6 +60,10 @@ public class PlayerControls : MonoBehaviour
             TileOccupier occupier = heldObject.GetComponent<TileOccupier>();
             occupier.rotation = (OccupierRotation) (((int)occupier.rotation + 90) % 360);
             occupier.gameObject.transform.Rotate(Vector3.back, 90);
+
+            // Update Selected Tiles
+            Vector2Int tilePosition = _tileSystem.TranslateCoordinatesToTile(worldMousePosition);
+            _tileSystem.SelectTiles(occupier.GetTilesOccupied(tilePosition));
         }
     }
 }
