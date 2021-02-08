@@ -7,6 +7,8 @@ using System.Linq;
 public class TileSystem : MonoBehaviour
 {
     public GameObject prefab;
+    public Tile fireTile;
+    public Tile originalTile;
     private TileOccupier[,] _tileArray;
     private Tilemap _tilemap;
     private Vector2Int[] _selectedTiles;
@@ -21,7 +23,7 @@ public class TileSystem : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+       
     }
 
     public bool TilesAreEmpty(Vector2Int[] locations)
@@ -73,6 +75,38 @@ public class TileSystem : MonoBehaviour
         }
         return null;
     }
+
+    public void Fire(Vector2Int[] tiles)
+    {
+        StartCoroutine(FireCoroutine(tiles));
+    }
+
+    IEnumerator AttackCoroutine()
+    {
+        //[boat].GetComponent<Shoot>().Fire_straight_line();
+        yield return new WaitForSeconds(5);
+        StartCoroutine(AttackCoroutine());
+    }
+
+    IEnumerator FireCoroutine(Vector2Int[] tiles)
+    {
+        foreach (Vector2Int location in tiles)
+        {
+            if (IsTilePointInBounds(location))
+            {
+                _tilemap.SetTile(new Vector3Int(location.x, location.y, 0), fireTile);
+            }
+        }
+        yield return new WaitForSeconds(0.5f);
+        foreach (Vector2Int location in tiles)
+        {
+            if (IsTilePointInBounds(location))
+            {
+                _tilemap.SetTile(new Vector3Int(location.x, location.y, 0), originalTile);
+            }
+        }
+    }
+
 
     // MARK - Tile Coordinate System
 
