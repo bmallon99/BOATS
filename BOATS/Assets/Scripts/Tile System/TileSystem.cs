@@ -7,17 +7,25 @@ using System.Linq;
 public class TileSystem : MonoBehaviour
 {
     public GameObject prefab;
-    private List<GameObject> _allBoats;
     private TileOccupier[,] _tileArray;
     private Tilemap _tilemap;
-    private Vector2Int[] _selectedTiles = new Vector2Int[0];
+    private Vector2Int[] _selectedTiles;
 
     // Start is called before the first frame update
     void Start()
     {
         _tileArray = new TileOccupier[TileConstants.TileMapWidth, TileConstants.TileMapHeight];
         _tilemap = GetComponent<Tilemap>();
-        _allBoats = new List<GameObject>();
+        _selectedTiles = new Vector2Int[0];
+
+        // Clear Tile Flags
+        for (int i = 0; i < TileConstants.TileMapWidth; i++)
+        {
+            for (int j = 0; j < TileConstants.TileMapHeight; j++)
+            {
+                _tilemap.SetTileFlags(new Vector3Int(i, j, 0), TileFlags.None);
+            }
+        }
     }
 
 
@@ -104,7 +112,6 @@ public class TileSystem : MonoBehaviour
         {
             if (IsTilePointInBounds(tile))
             {
-                _tilemap.SetTileFlags(new Vector3Int(tile.x, tile.y, 0), TileFlags.None);
                 _tilemap.SetColor(new Vector3Int(tile.x, tile.y, 0), selectionColor);
             }
         }
@@ -145,7 +152,6 @@ public class TileSystem : MonoBehaviour
         {
             if (IsTilePointInBounds(location))
             {
-                _tilemap.SetTileFlags(new Vector3Int(location.x, location.y, 0), TileFlags.None);
                 _tilemap.SetColor(new Vector3Int(location.x, location.y, 0), Color.yellow);
             }
         }
