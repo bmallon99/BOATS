@@ -10,6 +10,8 @@ public class PlayerControls : MonoBehaviour
 
     private TileSystem _tileSystem;
 
+    public Vector3 worldMousePosition => Camera.main.ScreenToWorldPoint(Pointer.current.position.ReadValue());
+
     // Start is called before the first frame update
     void Start()
     {
@@ -30,11 +32,16 @@ public class PlayerControls : MonoBehaviour
             Vector2 position = positionValue.Get<Vector2>();
             Vector3 worldPosition = Camera.main.ScreenToWorldPoint(position);
             heldObject.transform.position = new Vector3(worldPosition.x, worldPosition.y, -1);
+
+            Vector2Int tilePosition = _tileSystem.TranslateCoordinatesToTile(worldPosition);
+            TileOccupier occupier = heldObject.GetComponent<TileOccupier>();
+            _tileSystem.SelectTiles(occupier.GetTilesOccupied(tilePosition));
         }
     }
 
     public void OnPrimaryClick()
     {
+        // Ship Placement
         if (heldObject != null)
         {
             Vector2 position = Pointer.current.position.ReadValue();

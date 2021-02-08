@@ -8,6 +8,7 @@ public class TileSystem : MonoBehaviour
     public GameObject prefab;
     private TileOccupier[,] _tileArray;
     private Tilemap _tilemap;
+    private Vector2Int[] _selectedTiles;
 
     // Start is called before the first frame update
     void Start()
@@ -38,7 +39,7 @@ public class TileSystem : MonoBehaviour
 
     public bool PlaceShip(GameObject boat, Vector2Int location)
     {
-        if (IsValidTileCoordinate(location))
+        if (IsTilePointInBounds(location))
         {
             TileOccupier occupier = boat.GetComponent<TileOccupier>();
             Vector3 boatPosition = TranslateTileToCoordinates(occupier.GetFocusCoordinate(location));
@@ -61,12 +62,11 @@ public class TileSystem : MonoBehaviour
         return false;
     }
 
-
     public TileOccupier CheckCollision(Vector2Int[] tiles)
     {
         foreach (Vector2Int location in tiles)
         {
-            if (IsValidTileCoordinate(location) && _tileArray[location.x, location.y] != null)
+            if (IsTilePointInBounds(location) && _tileArray[location.x, location.y] != null)
             {
                 return _tileArray[location.x, location.y];
             }
@@ -74,7 +74,9 @@ public class TileSystem : MonoBehaviour
         return null;
     }
 
-    private bool IsValidTileCoordinate(Vector2Int tileCoordinate)
+    // MARK - Tile Coordinate System
+
+    public bool IsTilePointInBounds(Vector2Int tileCoordinate)
     {
         return tileCoordinate.x >= 0 && tileCoordinate.x < TileConstants.TileMapWidth
             && tileCoordinate.y >= 0 && tileCoordinate.y < TileConstants.TileMapHeight;
@@ -88,5 +90,28 @@ public class TileSystem : MonoBehaviour
     public Vector2Int TranslateCoordinatesToTile(Vector3 worldCoordinate)
     {
         return (Vector2Int) _tilemap.layoutGrid.WorldToCell(worldCoordinate);
+    }
+
+    // MARK - Selected Tile
+
+    public void SelectTiles(Vector2Int[] tiles)
+    {
+        foreach (Vector2Int tile in _selectedTiles)
+        {
+            if (IsTilePointInBounds(tile))
+            {
+                _tilemap.SetColor(new Vector3Int(tile.x, tile.y, 0), Color.white);
+            }
+        }
+
+        _selectedTiles = tiles;
+
+        foreach (Vector2Int tile in tiles)
+        {
+            if (IsTilePointInBounds(tile))
+            {
+                _tilemap.SetColor(new Vector3Int(tile.x, tile.y, 0), Color.green);
+            }
+        }
     }
 }
