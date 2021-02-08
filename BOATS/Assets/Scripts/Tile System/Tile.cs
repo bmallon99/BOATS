@@ -1,8 +1,7 @@
 ﻿using UnityEngine;
 
-enum TileStatus
+public enum TileOccupierType
 {
-    Empty,
     Friendly,
     Enemy,
     Base,
@@ -13,11 +12,4 @@ static class TileConstants
 {
     public static int TileMapWidth = 32;
     public static int TileMapHeight = 24;
-}
-
-class Tile
-{
-    public TileStatus status;
-    public GameObject occupyingObject;
-
 }

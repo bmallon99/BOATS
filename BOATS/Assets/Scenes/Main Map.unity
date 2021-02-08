@@ -7274,7 +7274,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff86e8cf0c20f4421af70e65b9604ed8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tile: {fileID: 11400000, guid: d13f36f72f8764b82a26b07f38e0cb82, type: 2}
+  prefab: {fileID: 2235320112497654965, guid: c8fed8c75738d4d939bd41c96f7546fa, type: 3}
 --- !u!1001 &1023503849
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7282,6 +7282,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -8966314098118848447, guid: c8fed8c75738d4d939bd41c96f7546fa,
+        type: 3}
+      propertyPath: rotation
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 594571241025234626, guid: c8fed8c75738d4d939bd41c96f7546fa,
         type: 3}
       propertyPath: m_RootOrder
