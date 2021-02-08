@@ -10,6 +10,7 @@ public class TileSystem : MonoBehaviour
     public Tile originalTile;
     private TileOccupier[,] _tileArray;
     private Tilemap _tilemap;
+    private Vector2Int[] _selectedTiles;
 
     // Start is called before the first frame update
     void Start()
@@ -39,7 +40,7 @@ public class TileSystem : MonoBehaviour
 
     public bool PlaceShip(GameObject boat, Vector2Int location)
     {
-        if (IsValidTileCoordinate(location))
+        if (IsTilePointInBounds(location))
         {
             TileOccupier occupier = boat.GetComponent<TileOccupier>();
             Vector3 boatPosition = TranslateTileToCoordinates(occupier.GetFocusCoordinate(location));
@@ -62,12 +63,11 @@ public class TileSystem : MonoBehaviour
         return false;
     }
 
-
     public TileOccupier CheckCollision(Vector2Int[] tiles)
     {
         foreach (Vector2Int location in tiles)
         {
-            if (IsValidTileCoordinate(location) && _tileArray[location.x, location.y] != null)
+            if (IsTilePointInBounds(location) && _tileArray[location.x, location.y] != null)
             {
                 return _tileArray[location.x, location.y];
             }
@@ -91,7 +91,7 @@ public class TileSystem : MonoBehaviour
     {
         foreach (Vector2Int location in tiles)
         {
-            if (IsValidTileCoordinate(location))
+            if (IsTilePointInBounds(location))
             {
                 _tilemap.SetTile(new Vector3Int(location.x, location.y, 0), fireTile);
             }
@@ -99,14 +99,17 @@ public class TileSystem : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         foreach (Vector2Int location in tiles)
         {
-            if (IsValidTileCoordinate(location))
+            if (IsTilePointInBounds(location))
             {
                 _tilemap.SetTile(new Vector3Int(location.x, location.y, 0), originalTile);
             }
         }
     }
 
-    private bool IsValidTileCoordinate(Vector2Int tileCoordinate)
+
+    // MARK - Tile Coordinate System
+
+    public bool IsTilePointInBounds(Vector2Int tileCoordinate)
     {
         return tileCoordinate.x >= 0 && tileCoordinate.x < TileConstants.TileMapWidth
             && tileCoordinate.y >= 0 && tileCoordinate.y < TileConstants.TileMapHeight;
@@ -114,19 +117,34 @@ public class TileSystem : MonoBehaviour
 
     public Vector3 TranslateTileToCoordinates(Vector2Int tileCoordinate)
     {
-        Vector3 worldCoordinates = _tilemap.layoutGrid.CellToWorld(new Vector3Int(tileCoordinate.x, tileCoordinate.y, 0));
-
-        // Adjust so it's visible (in front of the tilemap)
-        worldCoordinates.z = -1;
-        return worldCoordinates;
+        return _tilemap.layoutGrid.CellToWorld(new Vector3Int(tileCoordinate.x, tileCoordinate.y, 0));
     }
 
-    public Vector3Int TranslateCoordinatesToTile(Vector3 worldCoordinate)
+    public Vector2Int TranslateCoordinatesToTile(Vector3 worldCoordinate)
     {
-        Vector3Int tileCoordinates = _tilemap.layoutGrid.WorldToCell(worldCoordinate);
+        return (Vector2Int) _tilemap.layoutGrid.WorldToCell(worldCoordinate);
+    }
 
-        // Adjust so it's visible (in front of the tilemap)
-        // worldCoordinates.z = -1;
-        return tileCoordinates;
+    // MARK - Selected Tile
+
+    public void SelectTiles(Vector2Int[] tiles)
+    {
+        foreach (Vector2Int tile in _selectedTiles)
+        {
+            if (IsTilePointInBounds(tile))
+            {
+                _tilemap.SetColor(new Vector3Int(tile.x, tile.y, 0), Color.white);
+            }
+        }
+
+        _selectedTiles = tiles;
+
+        foreach (Vector2Int tile in tiles)
+        {
+            if (IsTilePointInBounds(tile))
+            {
+                _tilemap.SetColor(new Vector3Int(tile.x, tile.y, 0), Color.green);
+            }
+        }
     }
 }
