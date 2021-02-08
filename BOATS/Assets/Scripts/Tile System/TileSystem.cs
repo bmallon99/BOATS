@@ -62,18 +62,40 @@ public class TileSystem : MonoBehaviour
         return false;
     }
 
+
+    public TileOccupier CheckCollision(Vector2Int[] tiles)
+    {
+        foreach (Vector2Int location in tiles)
+        {
+            if (IsValidTileCoordinate(location) && _tileArray[location.x, location.y] != null)
+            {
+                return _tileArray[location.x, location.y];
+            }
+        }
+        return null;
+    }
+
     private bool IsValidTileCoordinate(Vector2Int tileCoordinate)
     {
         return tileCoordinate.x >= 0 && tileCoordinate.x < TileConstants.TileMapWidth
             && tileCoordinate.y >= 0 && tileCoordinate.y < TileConstants.TileMapHeight;
     }
 
-    private Vector3 TranslateTileToCoordinates(Vector2Int tileCoordinate)
+    public Vector3 TranslateTileToCoordinates(Vector2Int tileCoordinate)
     {
         Vector3 worldCoordinates = _tilemap.layoutGrid.CellToWorld(new Vector3Int(tileCoordinate.x, tileCoordinate.y, 0));
 
         // Adjust so it's visible (in front of the tilemap)
         worldCoordinates.z = -1;
         return worldCoordinates;
+    }
+
+    public Vector3Int TranslateCoordinatesToTile(Vector3 worldCoordinate)
+    {
+        Vector3Int tileCoordinates = _tilemap.layoutGrid.WorldToCell(worldCoordinate);
+
+        // Adjust so it's visible (in front of the tilemap)
+        // worldCoordinates.z = -1;
+        return tileCoordinates;
     }
 }
