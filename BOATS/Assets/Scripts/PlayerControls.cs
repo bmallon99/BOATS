@@ -36,7 +36,7 @@ public class PlayerControls : MonoBehaviour
             heldObject.transform.position = new Vector3(worldPosition.x, worldPosition.y, -1);
 
             // Update Selected Tiles
-            Vector2Int tilePosition = _tileSystem.TranslateCoordinatesToTile(worldPosition);
+            Vector2Int tilePosition = _tileSystem.WorldToTilePoint(worldPosition);
             TileOccupier occupier = heldObject.GetComponent<TileOccupier>();
             _tileSystem.SelectTiles(occupier.GetTilesOccupied(tilePosition));
         }
@@ -47,13 +47,13 @@ public class PlayerControls : MonoBehaviour
         // Ship Placement
         if (holding)
         {
-            Vector2Int tilePosition = _tileSystem.TranslateCoordinatesToTile(worldMousePosition);
+            Vector2Int tilePosition = _tileSystem.WorldToTilePoint(worldMousePosition);
             if (_tileSystem.PlaceShip(heldObject, tilePosition))
             {
                 holding = false;
                 Destroy(heldObject);
+                _tileSystem.SelectTiles(new Vector2Int[0]);
             }
-            _tileSystem.SelectTiles(new Vector2Int[0]);
         }
     }
 
@@ -67,7 +67,7 @@ public class PlayerControls : MonoBehaviour
             occupier.gameObject.transform.Rotate(Vector3.back, 90);
 
             // Update Selected Tiles
-            Vector2Int tilePosition = _tileSystem.TranslateCoordinatesToTile(worldMousePosition);
+            Vector2Int tilePosition = _tileSystem.WorldToTilePoint(worldMousePosition);
             _tileSystem.SelectTiles(occupier.GetTilesOccupied(tilePosition));
         }
     }
