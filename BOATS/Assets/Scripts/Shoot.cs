@@ -56,10 +56,14 @@ public class Shoot : MonoBehaviour
                 }
             }
             /*
-            TileOccupier hit = _tileGrid.CheckCollision(firingRange);
-            if (hit && hit.type==TileOccupierType.Enemy)
-            {
-                _tileGrid.fire(firingRange);
+            foreach (Vector2Int location in firingRange)
+            {   
+                TileOccupier hit = _tileGrid.CheckCollision(location);
+                if (hit && hit.type==TileOccupierType.Enemy)
+                {
+                    _tileGrid.fire(firingRange);
+                    break
+                }
             }
             */
             _tileGrid.Fire(firingRange);

@@ -114,16 +114,16 @@ public class TileSystem : MonoBehaviour
     // MARK - Collision Detection
 
 
-    public TileOccupier CheckCollision(Vector2Int[] tiles)
+    public TileOccupier CheckCollision(Vector2Int location)
     {
-        foreach (Vector2Int location in tiles)
+        if (IsTilePointInBounds(location) && !IsTileEmpty(location))
         {
-            if (IsTilePointInBounds(location) && !IsTileEmpty(location))
-            {
-                return _tileArray[location.x, location.y];
-            }
+            return _tileArray[location.x, location.y];
         }
-        return null;
+        else 
+        {
+            return null;
+        }
     }
 
     public void Fire(Vector2Int[] tiles)
@@ -145,6 +145,7 @@ public class TileSystem : MonoBehaviour
         {
             if (IsTilePointInBounds(location))
             {
+                _tilemap.SetTileFlags(new Vector3Int(location.x, location.y, 0), TileFlags.None);
                 _tilemap.SetColor(new Vector3Int(location.x, location.y, 0), Color.yellow);
             }
         }
