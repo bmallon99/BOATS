@@ -6,6 +6,8 @@ using UnityEngine.Tilemaps;
 public class TileSystem : MonoBehaviour
 {
     public GameObject prefab;
+    public Tile fireTile;
+    public Tile originalTile;
     private TileOccupier[,] _tileArray;
     private Tilemap _tilemap;
 
@@ -14,14 +16,12 @@ public class TileSystem : MonoBehaviour
     {
         _tileArray = new TileOccupier[TileConstants.TileMapWidth, TileConstants.TileMapHeight];
         _tilemap = GetComponent<Tilemap>();
-
-        PlaceShip(prefab, new Vector2Int(2, 2));
     }
 
     // Update is called once per frame
     void Update()
     {
-
+       
     }
 
     public bool TilesAreEmpty(Vector2Int[] locations)
@@ -73,6 +73,37 @@ public class TileSystem : MonoBehaviour
             }
         }
         return null;
+    }
+
+    public void Fire(Vector2Int[] tiles)
+    {
+        StartCoroutine(FireCoroutine(tiles));
+    }
+
+    IEnumerator AttackCoroutine()
+    {
+        //[boat].GetComponent<Shoot>().Fire_straight_line();
+        yield return new WaitForSeconds(5);
+        StartCoroutine(AttackCoroutine());
+    }
+
+    IEnumerator FireCoroutine(Vector2Int[] tiles)
+    {
+        foreach (Vector2Int location in tiles)
+        {
+            if (IsValidTileCoordinate(location))
+            {
+                _tilemap.SetTile(new Vector3Int(location.x, location.y, 0), fireTile);
+            }
+        }
+        yield return new WaitForSeconds(0.5f);
+        foreach (Vector2Int location in tiles)
+        {
+            if (IsValidTileCoordinate(location))
+            {
+                _tilemap.SetTile(new Vector3Int(location.x, location.y, 0), originalTile);
+            }
+        }
     }
 
     private bool IsValidTileCoordinate(Vector2Int tileCoordinate)
