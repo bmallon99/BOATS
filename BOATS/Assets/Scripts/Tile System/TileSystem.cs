@@ -176,9 +176,9 @@ public class TileSystem : MonoBehaviour
     // MARK - Shooting Routine
 
 
-    public void Fire(Vector2Int[] tiles)
+    public void Fire(Vector2Int Start, Vector2Int target)
     {
-        StartCoroutine(FireCoroutine(tiles));
+        //graphical aspect of shooting
     }
 
 
@@ -194,13 +194,13 @@ public class TileSystem : MonoBehaviour
         }
     }
 
-    IEnumerator FireCoroutine(Vector2Int[] tiles)
+    // Old firing implementation, can use to show range with some changes
+    IEnumerator ShowRange(Vector2Int[] tiles)
     {
         foreach (Vector2Int location in tiles)
         {
             if (IsTilePointInBounds(location))
             {
-                // Change this to someting else
                 _tilemap.SetColor(new Vector3Int(location.x, location.y, 0), Color.yellow);
             }
         }
@@ -212,5 +212,32 @@ public class TileSystem : MonoBehaviour
                 _tilemap.SetColor(new Vector3Int(location.x, location.y, 0), Color.white);
             }
         }
+    }
+
+
+    // MARK - Ship Death
+
+
+    public void Died(GameObject deadBoat, Vector2Int location)
+    {
+        TileOccupier occupier = deadBoat.GetComponent<TileOccupier>();
+        Vector3 boatPosition = TileToWorldPoint(occupier.GetFocusCoordinate(location));
+
+        Vector2Int[] occupyingTiles = occupier.GetTilesOccupied(location);
+
+        foreach (Vector2Int tile in occupyingTiles)
+        {
+            _tileArray[tile.x, tile.y] = null;
+        }
+
+        if (occupier.type == TileOccupierType.Friendly)
+        {
+            _friendlyBoats.Remove(deadBoat);
+        }
+        else
+        {
+            _enemyBoats.Remove(deadBoat);
+        }
+        Destroy(deadBoat);
     }
 }

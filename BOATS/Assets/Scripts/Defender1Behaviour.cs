@@ -7,6 +7,7 @@ using UnityEngine.Tilemaps;
 public class Defender1Behaviour : FriendlyBoatBehaviour
 {
     public int range;
+    public int damage;
     TileSystem _tileGrid;
     TileOccupier _boatTileInfo;
     // Start is called before the first frame update
@@ -40,8 +41,8 @@ public class Defender1Behaviour : FriendlyBoatBehaviour
 
                     case OccupierRotation.Clockwise180:
                         firingRange[i] = baseLocation;
-                        firingRange[i].y -= i + 2;
                         firingRange[i].x -= gun + 1;
+                        firingRange[i].y -= i + 2;
                         break;
 
                     case OccupierRotation.Clockwise270:
@@ -59,7 +60,8 @@ public class Defender1Behaviour : FriendlyBoatBehaviour
                 TileOccupier hit = _tileGrid.CheckHit(location);
                 if (hit && hit.type==TileOccupierType.Enemy)
                 {
-                    _tileGrid.Fire(firingRange);
+                    _tileGrid.Fire(firingRange[0], location);
+                    hit.TakeDamage(damage);
                     break;
                 }
             }            

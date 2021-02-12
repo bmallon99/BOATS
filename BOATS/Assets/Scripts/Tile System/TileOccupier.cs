@@ -16,10 +16,22 @@ public class TileOccupier : MonoBehaviour
     public TileOccupierType type;
     public int tilesWide;
     public int tilesTall;
-    public int _health;
+    public int health;
 
     // Set during Runtime
     public OccupierRotation rotation;
+
+    private TileSystem _tileSystem;
+
+
+    void Start()
+    {
+        _tileSystem = FindObjectOfType<TileSystem>();
+    }
+
+
+    // MARK - Location stuff
+
 
     // In a non-rotated object, the location should be the bottom left;
     public Vector2Int GetFocusCoordinate(Vector2Int location)
@@ -78,5 +90,19 @@ public class TileOccupier : MonoBehaviour
         }
 
         return tiles;
+    }
+
+
+    // MARK - Health
+
+
+    public void TakeDamage(int damage)
+    {
+        health -= damage;
+        if (health < 0)
+        {
+            Vector2Int location = (Vector2Int)_tileSystem.WorldToTilePoint(transform.position);
+            _tileSystem.Died(gameObject, location);
+        }
     }
 }

@@ -110,5 +110,5 @@ MonoBehaviour:
   type: 1
   tilesWide: 2
   tilesTall: 1
-  _health: 100
+  health: 100
   rotation: 0

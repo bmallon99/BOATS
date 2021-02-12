@@ -98,7 +98,7 @@ MonoBehaviour:
   type: 0
   tilesWide: 2
   tilesTall: 1
-  _health: 100
+  health: 100
   rotation: 0
 --- !u!114 &1380149880031698589
 MonoBehaviour:
@@ -112,4 +112,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9831a4532851b23438c7467522e8dcb6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  range: 0
+  range: 4
+  damage: 25
