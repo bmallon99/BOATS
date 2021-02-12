@@ -25,6 +25,8 @@ public class TileSystem : MonoBehaviour
         _tilemap = GetComponent<Tilemap>();
         _selectedTiles = new Vector2Int[0];
         _ticksSinceLastSpawn = 1;
+        _friendlyBoats = new List<GameObject>();
+        _enemyBoats = new List<GameObject>();
 
         // Clear Tile Flags
         for (int i = 0; i < TileConstants.TileMapWidth; i++)
@@ -44,17 +46,19 @@ public class TileSystem : MonoBehaviour
 
     IEnumerator MainTimerCoroutine()
     {
+        // All enemies move (and act)
+        foreach (GameObject enemy in _enemyBoats)
+        {
+            enemy.GetComponent<EnemyBoatBehaviour>().Move();
+        }
+
         // Spawning based on specified interval
         if (_ticksSinceLastSpawn > SpawnInterval)
         {
             PlaceShip(EnemyBoatPrefabs[0], GetSpawnLocation());
             _ticksSinceLastSpawn = 1;
         }
-        // All enemies move (and act)
-        foreach (GameObject enemy in _enemyBoats)
-        {
-            enemy.GetComponent<EnemyBoatBehaviour>().Move();
-        }
+        
         // All friendlies check if they can fire and do so
         foreach (GameObject friend in _friendlyBoats)
         {
@@ -103,13 +107,25 @@ public class TileSystem : MonoBehaviour
         return false;
     }
 
+    public void UpdateShip(TileOccupier occupier, Vector2Int[] oldTiles, Vector2Int[] newTiles)
+    {
+        foreach (Vector2Int tile in oldTiles)
+        {
+            _tileArray[tile.x, tile.y] = null;
+        }
+        foreach (Vector2Int tile in newTiles)
+        {
+            _tileArray[tile.x, tile.y] = occupier;
+        }
+    }
+
 
     // MARK - Enemy Ship Spawning
     
 
     public Vector2Int GetSpawnLocation()
     {
-        return new Vector2Int(0, 0);
+        return new Vector2Int(25, 10);
     }
 
 
