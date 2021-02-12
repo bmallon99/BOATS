@@ -6,10 +6,17 @@ using System.Linq;
 
 public class TileSystem : MonoBehaviour
 {
-    public GameObject prefab;
+    public int SpawnInterval;
+    private int _ticksSinceLastSpawn;
     private TileOccupier[,] _tileArray;
     private Tilemap _tilemap;
     private Vector2Int[] _selectedTiles;
+    private List<GameObject> _friendlyBoats;
+    private List<GameObject> _enemyBoats;
+
+    //possibly temporary
+    public GameObject[] EnemyBoatPrefabs;
+    
 
     // Start is called before the first frame update
     void Start()
@@ -17,6 +24,7 @@ public class TileSystem : MonoBehaviour
         _tileArray = new TileOccupier[TileConstants.TileMapWidth, TileConstants.TileMapHeight];
         _tilemap = GetComponent<Tilemap>();
         _selectedTiles = new Vector2Int[0];
+        _ticksSinceLastSpawn = 1;
 
         // Clear Tile Flags
         for (int i = 0; i < TileConstants.TileMapWidth; i++)
@@ -26,7 +34,39 @@ public class TileSystem : MonoBehaviour
                 _tilemap.SetTileFlags(new Vector3Int(i, j, 0), TileFlags.None);
             }
         }
+        // Start main game loop
+        StartCoroutine(MainTimerCoroutine());
     }
+
+
+    // MARK - Main Game Loop
+
+
+    IEnumerator MainTimerCoroutine()
+    {
+        // Spawning based on specified interval
+        if (_ticksSinceLastSpawn > SpawnInterval)
+        {
+            PlaceShip(EnemyBoatPrefabs[0], GetSpawnLocation());
+            _ticksSinceLastSpawn = 1;
+        }
+        // All enemies move (and act)
+        foreach (GameObject enemy in _enemyBoats)
+        {
+            enemy.GetComponent<EnemyBoatBehaviour>().Move();
+        }
+        // All friendlies check if they can fire and do so
+        foreach (GameObject friend in _friendlyBoats)
+        {
+            friend.GetComponent<FriendlyBoatBehaviour>().CheckFire();
+        }
+        _ticksSinceLastSpawn++;
+        yield return new WaitForSeconds(1f);
+        StartCoroutine(MainTimerCoroutine());
+    }
+
+
+    // MARK - Ship Placement
 
 
     public bool PlaceShip(GameObject boat, Vector2Int location)
@@ -43,7 +83,13 @@ public class TileSystem : MonoBehaviour
             {
                 GameObject newShip = Instantiate(boat, boatPosition, Quaternion.Euler(Vector3.back * (int)occupier.rotation));
                 TileOccupier newShipOccupier = newShip.GetComponent<TileOccupier>();
-                StartCoroutine(AttackCoroutine(newShip));
+                if (newShipOccupier.type==TileOccupierType.Friendly)
+                {
+                    _friendlyBoats.Add(newShip);
+                } else
+                {
+                    _enemyBoats.Add(newShip);
+                }
 
                 foreach (Vector2Int tile in occupyingTiles)
                 {
@@ -55,6 +101,15 @@ public class TileSystem : MonoBehaviour
         }
 
         return false;
+    }
+
+
+    // MARK - Enemy Ship Spawning
+    
+
+    public Vector2Int GetSpawnLocation()
+    {
+        return new Vector2Int(0, 0);
     }
 
 
@@ -118,10 +173,16 @@ public class TileSystem : MonoBehaviour
     }
 
 
-    // MARK - Collision Detection
+    // MARK - Shooting Routine
 
 
-    public TileOccupier CheckCollision(Vector2Int location)
+    public void Fire(Vector2Int[] tiles)
+    {
+        StartCoroutine(FireCoroutine(tiles));
+    }
+
+
+    public TileOccupier CheckHit(Vector2Int location)
     {
         if (IsTilePointInBounds(location) && !IsTileEmpty(location))
         {
@@ -133,25 +194,13 @@ public class TileSystem : MonoBehaviour
         }
     }
 
-    public void Fire(Vector2Int[] tiles)
-    {
-        StartCoroutine(FireCoroutine(tiles));
-    }
-
-    IEnumerator AttackCoroutine(GameObject boat)
-    {
-        yield return new WaitForSeconds(1);
-        boat.GetComponent<Shoot>().Fire_straight_line();
-        yield return new WaitForSeconds(5);
-        StartCoroutine(AttackCoroutine(boat));
-    }
-
     IEnumerator FireCoroutine(Vector2Int[] tiles)
     {
         foreach (Vector2Int location in tiles)
         {
             if (IsTilePointInBounds(location))
             {
+                // Change this to someting else
                 _tilemap.SetColor(new Vector3Int(location.x, location.y, 0), Color.yellow);
             }
         }

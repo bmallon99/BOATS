@@ -16,6 +16,7 @@ public class TileOccupier : MonoBehaviour
     public TileOccupierType type;
     public int tilesWide;
     public int tilesTall;
+    public int _health;
 
     // Set during Runtime
     public OccupierRotation rotation;

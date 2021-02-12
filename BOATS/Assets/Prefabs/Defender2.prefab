@@ -95,9 +95,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd27fdec099d3476185adaff7c8fd058, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 1
+  type: 0
   tilesWide: 2
   tilesTall: 1
+  _health: 100
   rotation: 0
 --- !u!114 &7071988992742485194
 MonoBehaviour:

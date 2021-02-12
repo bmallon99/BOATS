@@ -619,6 +619,7 @@ GameObject:
   - component: {fileID: 595225949}
   - component: {fileID: 595225948}
   - component: {fileID: 595225950}
+  - component: {fileID: 595225951}
   m_Layer: 0
   m_Name: Tilemap
   m_TagString: Untagged
@@ -7535,9 +7536,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff86e8cf0c20f4421af70e65b9604ed8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefab: {fileID: 0}
-  fireTile: {fileID: 0}
-  originalTile: {fileID: 0}
+  SpawnInterval: 0
+  EnemyBoatPrefabs:
+  - {fileID: 5567843318003924298, guid: 18f325b596a73ee488147ac3944ad0de, type: 3}
+--- !u!114 &595225951
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 595225946}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd27fdec099d3476185adaff7c8fd058, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 1
+  tilesWide: 2
+  tilesTall: 1
+  _health: 0
+  rotation: 0
 --- !u!1001 &775742957
 PrefabInstance:
   m_ObjectHideFlags: 0

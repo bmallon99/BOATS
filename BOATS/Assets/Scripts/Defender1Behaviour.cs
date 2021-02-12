@@ -4,11 +4,10 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 
 
-public class Shoot : MonoBehaviour
+public class Defender1Behaviour : FriendlyBoatBehaviour
 {
     public int range;
     TileSystem _tileGrid;
-    Tilemap _tilemap;
     TileOccupier _boatTileInfo;
     // Start is called before the first frame update
     void Start()
@@ -17,7 +16,7 @@ public class Shoot : MonoBehaviour
         _tileGrid = FindObjectOfType<TileSystem>();
     }
 
-    public void Fire_straight_line()
+    public override void CheckFire()
     {
         for (int gun = 0; gun < _boatTileInfo.tilesWide; gun++)
         {
@@ -55,18 +54,15 @@ public class Shoot : MonoBehaviour
                         throw new System.Exception("Unassigned OccupierRotation");
                 }
             }
-            /*
             foreach (Vector2Int location in firingRange)
             {   
-                TileOccupier hit = _tileGrid.CheckCollision(location);
+                TileOccupier hit = _tileGrid.CheckHit(location);
                 if (hit && hit.type==TileOccupierType.Enemy)
                 {
-                    _tileGrid.fire(firingRange);
-                    break
+                    _tileGrid.Fire(firingRange);
+                    break;
                 }
-            }
-            */
-            _tileGrid.Fire(firingRange);
+            }            
         }
 
     }
