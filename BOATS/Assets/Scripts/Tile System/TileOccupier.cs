@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public enum OccupierRotation:int
 {
@@ -22,7 +23,7 @@ public class TileOccupier : MonoBehaviour
     public OccupierRotation rotation;
 
     private TileSystem _tileSystem;
-
+    //find good representation for health bar
 
     void Start()
     {
@@ -99,10 +100,11 @@ public class TileOccupier : MonoBehaviour
     public void TakeDamage(int damage)
     {
         health -= damage;
-        if (health < 0)
+        if (health <= 0)
         {
             Vector2Int location = (Vector2Int)_tileSystem.WorldToTilePoint(transform.position);
             _tileSystem.Died(gameObject, location);
         }
+        //update health bar somehow
     }
 }

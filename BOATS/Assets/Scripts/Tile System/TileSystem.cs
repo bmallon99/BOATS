@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -16,7 +17,8 @@ public class TileSystem : MonoBehaviour
 
     //possibly temporary
     public GameObject[] EnemyBoatPrefabs;
-    
+
+    private readonly System.Random _random = new System.Random();
 
     // Start is called before the first frame update
     void Start()
@@ -125,7 +127,31 @@ public class TileSystem : MonoBehaviour
 
     public Vector2Int GetSpawnLocation()
     {
-        return new Vector2Int(25, 10);
+        int quadrant = _random.Next(4);
+        TileOccupier occupier = EnemyBoatPrefabs[0].GetComponent<TileOccupier>();
+
+        switch (quadrant)
+        {
+            case 0:
+                occupier.rotation = (OccupierRotation)0;
+                return new Vector2Int(30, 12);
+
+            case 1:
+                occupier.rotation = (OccupierRotation)90;
+                return new Vector2Int(16, 1);
+                
+
+            case 2:
+                occupier.rotation = (OccupierRotation)180;
+                return new Vector2Int(1, 12);
+
+            case 3:
+                occupier.rotation = (OccupierRotation)270;
+                return new Vector2Int(16, 22);
+
+            default:
+                throw new System.Exception("Random Failed");
+        }
     }
 
 
