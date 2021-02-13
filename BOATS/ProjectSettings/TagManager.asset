@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - Tilemap
+  - Controls
+  - Left Click
   layers:
   - Default
   - TransparentFX

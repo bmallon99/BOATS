@@ -3,21 +3,37 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+public enum MenuState {
+    Idle,
+    HoldingNewShip
+}
 
 public class PlayerControls : MonoBehaviour
 {
     public GameObject heldObject;
-    public bool holding;
-
+    private MenuInfoController _controls;
+    private MenuState _state;
+    public MenuState state
+    {
+        get => _state;
+        set
+        {
+            _state = value;
+            if (_controls != null)
+            {
+                _controls.updateInfoText(value);
+            }
+        }
+    }
     private TileSystem _tileSystem;
-
     public Vector3 worldMousePosition => Camera.main.ScreenToWorldPoint(Pointer.current.position.ReadValue());
 
     // Start is called before the first frame update
     void Start()
     {
         _tileSystem = FindObjectOfType<TileSystem>();
-        holding = false;
+        _controls = FindObjectOfType<MenuInfoController>();
+        state = MenuState.Idle;
     }
 
     // Update is called once per frame
@@ -29,7 +45,7 @@ public class PlayerControls : MonoBehaviour
     public void OnMouseMoved(InputValue positionValue)
     {
         // "Ghost" ship underneath the player's mouse when selected to place
-        if (holding)
+        if (state == MenuState.HoldingNewShip)
         {
             Vector2 position = positionValue.Get<Vector2>();
             Vector3 worldPosition = Camera.main.ScreenToWorldPoint(position);
@@ -45,12 +61,12 @@ public class PlayerControls : MonoBehaviour
     public void OnPrimaryClick()
     {
         // Ship Placement
-        if (holding)
+        if (state == MenuState.HoldingNewShip)
         {
             Vector2Int tilePosition = _tileSystem.WorldToTilePoint(worldMousePosition);
             if (_tileSystem.PlaceShip(heldObject, tilePosition))
             {
-                holding = false;
+                state = MenuState.Idle;
                 Destroy(heldObject);
                 _tileSystem.SelectTiles(new Vector2Int[0]);
             }
@@ -60,7 +76,7 @@ public class PlayerControls : MonoBehaviour
     public void OnSecondaryClick()
     {
         // Rotate the ship
-        if (holding)
+        if (state == MenuState.HoldingNewShip)
         {
             TileOccupier occupier = heldObject.GetComponent<TileOccupier>();
             occupier.rotation = (OccupierRotation) (((int)occupier.rotation + 90) % 360);
