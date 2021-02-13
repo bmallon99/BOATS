@@ -15,7 +15,7 @@ public class ShipMenuSelector : MonoBehaviour
     public void HoldShip(GameObject shipPrefab)
     {
         bool differentShip = myShip != player.heldObject;
-        if (!player.holding || differentShip)
+        if (player.state == MenuState.Idle || differentShip)
         {
             if (differentShip)
             {
@@ -23,12 +23,12 @@ public class ShipMenuSelector : MonoBehaviour
             }
             myShip = Instantiate(shipPrefab, player.worldMousePosition, new Quaternion());
             player.heldObject = myShip;
-            player.holding = true;    
+            player.state = MenuState.HoldingNewShip;    
         }
         else
         {
             Destroy(myShip);
-            player.holding = false;
+            player.state = MenuState.Idle;
         }
     }
 }

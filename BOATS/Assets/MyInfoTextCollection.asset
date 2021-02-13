@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4ab5f64881dd4ab093c44800f8e3ccb, type: 3}
+  m_Name: MyInfoTextCollection
+  m_EditorClassIdentifier: 
+  allInfoTextPrefabs:
+  - state: 0
+    infoTextPrefab: {fileID: 8443094255660490177, guid: 75403c2e4a3d64a2da57d4fa05c17d1b,
+      type: 3}
+  - state: 1
+    infoTextPrefab: {fileID: 8013584686842610668, guid: 17af405fa4ed94a08b040c2bdf2150e8,
+      type: 3}
