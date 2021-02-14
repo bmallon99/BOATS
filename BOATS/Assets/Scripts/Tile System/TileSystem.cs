@@ -16,8 +16,9 @@ public class TileSystem : MonoBehaviour
     private List<GameObject> _friendlyBoats;
     private List<GameObject> _enemyBoats;
 
-    //possibly temporary
-    public GameObject[] EnemyBoatPrefabs;
+    // Unity Editor
+    public GameObject[] EnemyBoatPrefabs; // possibly temporary
+    public GameObject bulletPrefab;
 
     private readonly System.Random _random = new System.Random();
 
@@ -258,17 +259,12 @@ public class TileSystem : MonoBehaviour
     // MARK - Shooting Routine
 
 
-    public void Fire(Vector2Int Start, Vector2Int target)
-    {
-        //graphical aspect of shooting
-    }
-
     // Returns true if hit something
-    public bool ApplyDamage(TileOccupierType src, Vector2Int location, int damage)
+    public bool ApplyDamage(TileOccupierType src, Vector2Int start, Vector2Int target, int damage)
     {
-        if (IsTilePointInBounds(location) && !IsTileEmpty(location))
+        if (IsTilePointInBounds(target) && !IsTileEmpty(target))
         {
-            TileOccupier dst = _tileArray[location.x, location.y];
+            TileOccupier dst = _tileArray[target.x, target.y];
             if (src == dst.type)
             {
                 return false;
@@ -278,30 +274,45 @@ public class TileSystem : MonoBehaviour
                 return false;
             }
 
-            dst.TakeDamage(damage);
+            FireAnimation(start, target, () =>
+            {
+                // completion handler
+                if (dst != null)
+                {
+                    dst.TakeDamage(damage);
+                }
+            });
+
             return true;
         }
         return false;
     }
 
-    // Old firing implementation, can use to show range with some changes
-    IEnumerator ShowRange(Vector2Int[] tiles)
+    private void FireAnimation(Vector2Int start, Vector2Int target, Action completionHandler)
     {
-        foreach (Vector2Int location in tiles)
+        IEnumerator FireRoutine()
         {
-            if (IsTilePointInBounds(location))
+            float dist = Vector2.Distance(start, target);
+            float speed = TileConstants.TileMapWidth / 0.8f; // dist / time
+            float time = (dist / speed) / TileConstants.TileMapWidth; // time = (dist / speed) / iterations
+            GameObject bullet = Instantiate(bulletPrefab, new Vector3(start.x, start.y, 0), new Quaternion());
+
+            // Loop 1s
+            for (float update = 0; update < TileConstants.TileMapWidth; update++)
             {
-                _tilemap.SetColor(new Vector3Int(location.x, location.y, 0), Color.yellow);
+                // do (update + 1) so the bullet starts a bit off the firing ship
+                // and lands on top of the receiving ship
+                Vector2 newPos = Vector2.Lerp(start, target, (update + 1) / TileConstants.TileMapWidth);
+                bullet.transform.position = newPos;
+
+                yield return new WaitForSeconds(time);
             }
+
+            completionHandler();
+            Destroy(bullet);
         }
-        yield return new WaitForSeconds(0.5f);
-        foreach (Vector2Int location in tiles)
-        {
-            if (IsTilePointInBounds(location))
-            {
-                _tilemap.SetColor(new Vector3Int(location.x, location.y, 0), Color.white);
-            }
-        }
+
+        StartCoroutine(FireRoutine());
     }
 
 

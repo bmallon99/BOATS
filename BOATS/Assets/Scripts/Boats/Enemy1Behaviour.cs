@@ -60,11 +60,6 @@ public class Enemy1Behaviour : BoatBehavior
 
     protected override bool Attack() {
         Vector2Int nextPosition = FindNextPosition(BoatPosition);
-        if (_tileGrid.ApplyDamage(_boatTileInfo.type, nextPosition, damage))
-        {
-            // FIREEEE
-            return true;
-        }
-        return false;
+        return _tileGrid.ApplyDamage(_boatTileInfo.type, BoatPosition, nextPosition, damage);
     }
 }

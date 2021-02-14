@@ -8084,6 +8084,8 @@ MonoBehaviour:
   SpawnInterval: 5
   EnemyBoatPrefabs:
   - {fileID: 5567843318003924298, guid: 18f325b596a73ee488147ac3944ad0de, type: 3}
+  bulletPrefab: {fileID: 3512853659860519963, guid: 429995a101b474de68b27841862898e4,
+    type: 3}
 --- !u!1 &672029958
 GameObject:
   m_ObjectHideFlags: 0

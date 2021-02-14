@@ -27,13 +27,16 @@ public class Defender1Behaviour : BoatBehavior
     protected override bool Attack()
     {
         bool attackSuccessful = false;
-        Vector2Int[,] firingRange = GetFiringRange((Vector2Int)_tileGrid.WorldToTilePoint(transform.position));
+        Vector2Int[,] firingRange = GetFiringRange(_tileGrid.WorldToTilePoint(transform.position));
        
         for (int gun = 0; gun < _boatTileInfo.tilesWide; gun++)
         {
             for (int i= 0; i < range; i++)
             {
-                if (_tileGrid.ApplyDamage(_boatTileInfo.type, firingRange[gun, i], damage))
+                if (_tileGrid.ApplyDamage(_boatTileInfo.type,
+                                          firingRange[gun, 0],
+                                          firingRange[gun, i],
+                                          damage))
                 {
                     attackSuccessful = true;
                     break;
