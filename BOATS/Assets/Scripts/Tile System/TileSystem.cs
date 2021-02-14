@@ -40,6 +40,18 @@ public class TileSystem : MonoBehaviour
                 _tilemap.SetTileFlags(new Vector3Int(i, j, 0), TileFlags.None);
             }
         }
+
+        TileOccupier baseOccupier = GameObject.FindGameObjectWithTag("Base").GetComponent<TileOccupier>();
+        baseOccupier.GetComponent<BoatBehavior>().InitBoat(new Vector2Int(13, 9));
+        // Make the base tiles occupied
+        for (int x = 13; x <= 18; x++)
+        {
+            for (int y = 9; y <= 14; y++)
+            {
+                _tileArray[x, y] = baseOccupier;
+            }
+        }
+
         // Start main game loop
         StartCoroutine(MainTimerCoroutine());
     }
@@ -104,7 +116,7 @@ public class TileSystem : MonoBehaviour
                     _tileArray[tile.x, tile.y] = newShipOccupier;
                 }
 
-                newShipOccupier.GetComponent<BoatBehavior>().BoatPosition = location;
+                newShipOccupier.GetComponent<BoatBehavior>().InitBoat(location);
                 return true;
             }
         }

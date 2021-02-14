@@ -30,7 +30,7 @@ public class TileOccupier : MonoBehaviour
     void Start()
     {
         _tileSystem = FindObjectOfType<TileSystem>();
-        _boat = FindObjectOfType<BoatBehavior>();
+        _boat = GetComponent<BoatBehavior>();
     }
 
 

@@ -10,11 +10,10 @@ public class Enemy1Behaviour : BoatBehavior
     private TileOccupier _boatTileInfo;
 
     // Start is called before the first frame update
-    void Start()
+    public void Start()
     {
         _boatTileInfo = GetComponent<TileOccupier>();
         _tileGrid = FindObjectOfType<TileSystem>();
-        InitHealthBar();
     }
 
     public override void Turn()
@@ -52,7 +51,7 @@ public class Enemy1Behaviour : BoatBehavior
         {
             Vector3 boatTransformPosition = _tileGrid.TileToWorldPoint(_boatTileInfo.GetFocusCoordinate(nextPosition));
             transform.position = boatTransformPosition;
-            MyHealthText.transform.position = boatTransformPosition;
+            MyHealthText.transform.position = AdjustDamageBarPosition(boatTransformPosition);
             BoatPosition = nextPosition;
             return true;
         }
