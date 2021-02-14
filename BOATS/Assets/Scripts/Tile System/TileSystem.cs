@@ -12,6 +12,7 @@ public class TileSystem : MonoBehaviour
     private TileOccupier[,] _tileArray;
     private Tilemap _tilemap;
     private Vector2Int[] _selectedTiles;
+    private Vector2Int[,] _selectedRangeTiles;
     private List<GameObject> _friendlyBoats;
     private List<GameObject> _enemyBoats;
 
@@ -26,6 +27,7 @@ public class TileSystem : MonoBehaviour
         _tileArray = new TileOccupier[TileConstants.TileMapWidth, TileConstants.TileMapHeight];
         _tilemap = GetComponent<Tilemap>();
         _selectedTiles = new Vector2Int[0];
+        _selectedRangeTiles = new Vector2Int[0,0];
         _ticksSinceLastSpawn = 1;
         _friendlyBoats = new List<GameObject>();
         _enemyBoats = new List<GameObject>();
@@ -197,7 +199,7 @@ public class TileSystem : MonoBehaviour
     // MARK - Selected Tile
 
 
-    public void SelectTiles(Vector2Int[] tiles)
+    public void SelectTiles(Vector2Int[] tiles, Vector2Int[,] range)
     {
         foreach (Vector2Int tile in _selectedTiles)
         {
@@ -206,8 +208,18 @@ public class TileSystem : MonoBehaviour
                 _tilemap.SetColor(new Vector3Int(tile.x, tile.y, 0), Color.white);
             }
         }
-
+        
         _selectedTiles = tiles;
+
+        foreach (Vector2Int tile in _selectedRangeTiles)
+        {
+            if (IsTilePointInBounds(tile))
+            {
+                _tilemap.SetColor(new Vector3Int(tile.x, tile.y, 0), Color.white);
+            }
+        }
+
+        _selectedRangeTiles = range;
 
         // Check if new tiles are valid
         Color selectionColor = tiles.All(tile => IsTileEmpty(tile)) ? Color.green : Color.red;
@@ -218,6 +230,14 @@ public class TileSystem : MonoBehaviour
             if (IsTilePointInBounds(tile))
             {
                 _tilemap.SetColor(new Vector3Int(tile.x, tile.y, 0), selectionColor);
+            }
+        }
+
+        foreach (Vector2Int tile in range)
+        {
+            if (IsTilePointInBounds(tile))
+            {
+                _tilemap.SetColor(new Vector3Int(tile.x, tile.y, 0), Color.yellow);
             }
         }
     }

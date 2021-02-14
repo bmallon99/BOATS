@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,6 +12,11 @@ public abstract class BoatBehavior : MonoBehaviour
     protected abstract bool Attack();
 
     // Shared boat behavior
+    public virtual Vector2Int[,] GetFiringRange(Vector2Int position)
+    {
+        throw new NotImplementedException();
+    }
+
     public int totalHealth;
     protected Vector2Int _boatPosition;
     public Vector2Int BoatPosition { get; set; }

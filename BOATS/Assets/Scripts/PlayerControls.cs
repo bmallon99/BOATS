@@ -54,7 +54,8 @@ public class PlayerControls : MonoBehaviour
             // Update Selected Tiles
             Vector2Int tilePosition = _tileSystem.WorldToTilePoint(worldPosition);
             TileOccupier occupier = heldObject.GetComponent<TileOccupier>();
-            _tileSystem.SelectTiles(occupier.GetTilesOccupied(tilePosition));
+            BoatBehavior behavior = heldObject.GetComponent<BoatBehavior>();
+            _tileSystem.SelectTiles(occupier.GetTilesOccupied(tilePosition), behavior.GetFiringRange(occupier.GetFocusCoordinate(tilePosition)));
         }
     }
 
@@ -68,7 +69,7 @@ public class PlayerControls : MonoBehaviour
             {
                 state = MenuState.Idle;
                 Destroy(heldObject);
-                _tileSystem.SelectTiles(new Vector2Int[0]);
+                _tileSystem.SelectTiles(new Vector2Int[0], new Vector2Int[0,0]);
             }
         }
     }
@@ -84,7 +85,8 @@ public class PlayerControls : MonoBehaviour
 
             // Update Selected Tiles
             Vector2Int tilePosition = _tileSystem.WorldToTilePoint(worldMousePosition);
-            _tileSystem.SelectTiles(occupier.GetTilesOccupied(tilePosition));
+            BoatBehavior behavior = heldObject.GetComponent<BoatBehavior>();
+            _tileSystem.SelectTiles(occupier.GetTilesOccupied(tilePosition), behavior.GetFiringRange(occupier.GetFocusCoordinate(tilePosition)));
         }
     }
 }
