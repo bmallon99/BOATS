@@ -11,11 +11,10 @@ public class Defender1Behaviour : BoatBehavior
     TileSystem _tileGrid;
     TileOccupier _boatTileInfo;
     // Start is called before the first frame update
-    void Start()
+    public void Start()
     {
         _boatTileInfo = GetComponent<TileOccupier>();
         _tileGrid = FindObjectOfType<TileSystem>();
-        InitHealthBar();
     }
 
     public override void Turn()

@@ -15,6 +15,8 @@ public abstract class BoatBehavior : MonoBehaviour
     protected Vector2Int _boatPosition;
     public Vector2Int BoatPosition { get; set; }
 
+    private TileOccupier myTileOccupier;
+
     public virtual int Health
     {
         get => totalHealth;
@@ -43,13 +45,41 @@ public abstract class BoatBehavior : MonoBehaviour
         }
     }
 
-    protected virtual void InitHealthBar()
+    protected void InitHealthBar()
     {
         GameObject _healthBars = GameObject.FindGameObjectWithTag("Health Bars");
-        MyHealthText = Instantiate(healthTextPrefab, transform.position, new Quaternion(), _healthBars.transform);
+        myTileOccupier = GetComponent<TileOccupier>();
+        MyHealthText = Instantiate(healthTextPrefab, AdjustDamageBarPosition(transform.position), new Quaternion(), _healthBars.transform);
         Health = totalHealth;
     }
 
+    public void InitBoat(Vector2Int location)
+    {
+        InitHealthBar();
+        BoatPosition = location;
+    }
 
+    // probably temporary
+    protected virtual Vector3 AdjustDamageBarPosition(Vector3 pos)
+    {
+        float adjustment = 1.0f;
+        switch (myTileOccupier.rotation)
+        {
+            case OccupierRotation.Zero:
+                return new Vector3(pos.x + adjustment, pos.y - (0.5f * adjustment));
+            case OccupierRotation.Clockwise90:
+                return new Vector3(pos.x + (0.5f * adjustment), pos.y - (2.5f * adjustment));
+            case OccupierRotation.Clockwise180:
+                return new Vector3(pos.x - adjustment, pos.y - (1.5f * adjustment));
+            case OccupierRotation.Clockwise270:
+                return new Vector3(pos.x - (0.5f * adjustment), pos.y - (0.5f * adjustment));
+            default:
+                return pos;
+        }
+    }
 
+    public void DestroyHealthText()
+    {
+        Destroy(MyHealthText);
+    }
 }
