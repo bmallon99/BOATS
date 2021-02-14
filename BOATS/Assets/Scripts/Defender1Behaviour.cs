@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 
 
-public class Defender1Behaviour : FriendlyBoatBehaviour
+public class Defender1Behaviour : BoatBehavior
 {
     public int range;
     public int damage;
@@ -15,10 +15,19 @@ public class Defender1Behaviour : FriendlyBoatBehaviour
     {
         _boatTileInfo = GetComponent<TileOccupier>();
         _tileGrid = FindObjectOfType<TileSystem>();
+        InitHealthBar();
     }
 
-    public override void CheckFire()
+    public override void Turn()
     {
+        Attack();
+    }
+
+    protected override bool Move() { return false; }
+
+    protected override bool Attack()
+    {
+        bool attackSuccessful = false;
         for (int gun = 0; gun < _boatTileInfo.tilesWide; gun++)
         {
             Vector2Int[] firingRange = new Vector2Int[range];
@@ -56,16 +65,22 @@ public class Defender1Behaviour : FriendlyBoatBehaviour
                 }
             }
             foreach (Vector2Int location in firingRange)
-            {   
-                TileOccupier hit = _tileGrid.CheckHit(location);
-                if (hit && hit.type==TileOccupierType.Enemy)
+            {
+                if (_tileGrid.ApplyDamage(_boatTileInfo.type, location, damage))
                 {
-                    _tileGrid.Fire(firingRange[0], location);
-                    hit.TakeDamage(damage);
+                    attackSuccessful = true;
                     break;
                 }
-            }            
-        }
 
+                //TileOccupier hit = _tileGrid.CheckHit(location);
+                //if (hit && hit.type==TileOccupierType.Enemy)
+                //{
+                //    _tileGrid.Fire(firingRange[0], location);
+                //    hit.TakeDamage(damage);
+                //    break;
+                //}
+            }
+        }
+        return attackSuccessful;
     }
 }

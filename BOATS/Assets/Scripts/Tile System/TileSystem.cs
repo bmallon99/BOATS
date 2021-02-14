@@ -51,7 +51,7 @@ public class TileSystem : MonoBehaviour
         // All enemies move (and act)
         foreach (GameObject enemy in _enemyBoats)
         {
-            enemy.GetComponent<EnemyBoatBehaviour>().Move();
+            enemy.GetComponent<BoatBehavior>().Turn();
         }
 
         // Spawning based on specified interval
@@ -64,7 +64,7 @@ public class TileSystem : MonoBehaviour
         // All friendlies check if they can fire and do so
         foreach (GameObject friend in _friendlyBoats)
         {
-            friend.GetComponent<FriendlyBoatBehaviour>().CheckFire();
+            friend.GetComponent<BoatBehavior>().Turn();
         }
         _ticksSinceLastSpawn++;
         yield return new WaitForSeconds(1f);
@@ -74,20 +74,20 @@ public class TileSystem : MonoBehaviour
 
     // MARK - Ship Placement
 
-
-    public bool PlaceShip(GameObject boat, Vector2Int location)
+    public bool PlaceShip(GameObject boatPrefab, Vector2Int location)
     {
         if (IsTilePointInBounds(location))
         {
-            TileOccupier occupier = boat.GetComponent<TileOccupier>();
-            Vector3 boatPosition = TileToWorldPoint(occupier.GetFocusCoordinate(location));
+            TileOccupier occupier = boatPrefab.GetComponent<TileOccupier>();
+            Vector2Int boatCoordinate = occupier.GetFocusCoordinate(location);
+            Vector3 boatPosition = TileToWorldPoint(boatCoordinate);
 
             Vector2Int[] occupyingTiles = occupier.GetTilesOccupied(location);
 
             // If all tiles are empty (i.e. valid for placing)
             if (occupyingTiles.All(tile => IsTileEmpty(tile)))
             {
-                GameObject newShip = Instantiate(boat, boatPosition, Quaternion.Euler(Vector3.back * (int)occupier.rotation));
+                GameObject newShip = Instantiate(boatPrefab, boatPosition, Quaternion.Euler(Vector3.back * (int)occupier.rotation));
                 TileOccupier newShipOccupier = newShip.GetComponent<TileOccupier>();
                 if (newShipOccupier.type==TileOccupierType.Friendly)
                 {
@@ -102,6 +102,7 @@ public class TileSystem : MonoBehaviour
                     _tileArray[tile.x, tile.y] = newShipOccupier;
                 }
 
+                newShipOccupier.GetComponent<BoatBehavior>().BoatPosition = location;
                 return true;
             }
         }
@@ -109,16 +110,23 @@ public class TileSystem : MonoBehaviour
         return false;
     }
 
-    public void UpdateShip(TileOccupier occupier, Vector2Int[] oldTiles, Vector2Int[] newTiles)
+    public bool TryMove(TileOccupier occupier, Vector2Int[] oldTiles, Vector2Int[] newTiles)
     {
-        foreach (Vector2Int tile in oldTiles)
+        if (newTiles.All(tile => {
+            return IsTileEmpty(tile) || oldTiles.Contains(tile);
+        }))
         {
-            _tileArray[tile.x, tile.y] = null;
+            foreach (Vector2Int tile in oldTiles)
+            {
+                _tileArray[tile.x, tile.y] = null;
+            }
+            foreach (Vector2Int tile in newTiles)
+            {
+                _tileArray[tile.x, tile.y] = occupier;
+            }
+            return true;
         }
-        foreach (Vector2Int tile in newTiles)
-        {
-            _tileArray[tile.x, tile.y] = occupier;
-        }
+        return false;
     }
 
 
@@ -223,17 +231,25 @@ public class TileSystem : MonoBehaviour
         //graphical aspect of shooting
     }
 
-
-    public TileOccupier CheckHit(Vector2Int location)
+    // Returns true if hit something
+    public bool ApplyDamage(TileOccupierType src, Vector2Int location, int damage)
     {
         if (IsTilePointInBounds(location) && !IsTileEmpty(location))
         {
-            return _tileArray[location.x, location.y];
+            TileOccupier dst = _tileArray[location.x, location.y];
+            if (src == dst.type)
+            {
+                return false;
+            }
+            else if (src == TileOccupierType.Friendly && dst.type == TileOccupierType.Base)
+            {
+                return false;
+            }
+
+            dst.TakeDamage(damage);
+            return true;
         }
-        else 
-        {
-            return null;
-        }
+        return false;
     }
 
     // Old firing implementation, can use to show range with some changes

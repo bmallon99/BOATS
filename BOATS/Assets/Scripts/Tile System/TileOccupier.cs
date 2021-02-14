@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Tilemaps;
 
 public enum OccupierRotation:int
 {
@@ -17,7 +18,6 @@ public class TileOccupier : MonoBehaviour
     public TileOccupierType type;
     public int tilesWide;
     public int tilesTall;
-    public int health;
 
     // Set during Runtime
     public OccupierRotation rotation;
@@ -25,14 +25,16 @@ public class TileOccupier : MonoBehaviour
     private TileSystem _tileSystem;
     //find good representation for health bar
 
+    private BoatBehavior _boat;
+
     void Start()
     {
         _tileSystem = FindObjectOfType<TileSystem>();
+        _boat = FindObjectOfType<BoatBehavior>();
     }
 
 
     // MARK - Location stuff
-
 
     // In a non-rotated object, the location should be the bottom left;
     public Vector2Int GetFocusCoordinate(Vector2Int location)
@@ -99,12 +101,11 @@ public class TileOccupier : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        health -= damage;
-        if (health <= 0)
+        _boat.Health -= damage;
+        if (_boat.Health <= 0)
         {
             Vector2Int location = (Vector2Int)_tileSystem.WorldToTilePoint(transform.position);
             _tileSystem.Died(gameObject, location);
         }
-        //update health bar somehow
     }
 }

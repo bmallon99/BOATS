@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 7862703415566459639}
   - component: {fileID: 8189568740894695346}
-  - component: {fileID: 5467421314570692599}
   - component: {fileID: -763842431984668080}
+  - component: {fileID: 4413425220756343806}
   m_Layer: 0
   m_Name: Enemy1
   m_TagString: Untagged
@@ -83,19 +83,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &5467421314570692599
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5567843318003924298}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 172b79632bbb33541a925e65098a49b1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  damage: 10
 --- !u!114 &-763842431984668080
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -111,5 +98,20 @@ MonoBehaviour:
   type: 1
   tilesWide: 2
   tilesTall: 1
-  health: 100
   rotation: 0
+--- !u!114 &4413425220756343806
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5567843318003924298}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 355211656efc84d59a0cb8e8252ab8fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  totalHealth: 100
+  healthTextPrefab: {fileID: 1849871718613267928, guid: c88f4841d124445d68a877093e063bf4,
+    type: 3}
+  damage: 10
