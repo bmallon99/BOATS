@@ -40,7 +40,7 @@ public abstract class BoatBehavior : MonoBehaviour
     {
         if (MyHealthText != null)
         {
-            if (newHealth == 0)
+            if (newHealth <= 0)
             {
                 Destroy(MyHealthText);
             }
