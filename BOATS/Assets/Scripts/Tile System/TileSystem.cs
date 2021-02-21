@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.UI;
 using System.Linq;
 
 public class TileSystem : MonoBehaviour
@@ -17,7 +18,7 @@ public class TileSystem : MonoBehaviour
     private List<GameObject> _enemyBoats;
     private EnemySpawnTile[] _enemySpawnTiles;
     private Vector2Int[] _enemySpawnPositions;
-    private MenuInfoController _infoText;
+    private Text _warningText;
 
     // Curreny and Score
     private int _score;
@@ -57,7 +58,7 @@ public class TileSystem : MonoBehaviour
         _quadrantsActive = 0;
         _friendlyBoats = new List<GameObject>();
         _enemyBoats = new List<GameObject>();
-        _infoText = FindObjectOfType<MenuInfoController>();
+        _warningText = GameObject.Find("WarningText").GetComponent<Text>();
 
         // Clear Tile Flags
         for (int i = 0; i < TileConstants.TileMapWidth; i++)
@@ -85,6 +86,7 @@ public class TileSystem : MonoBehaviour
 
         _InitEnemySpawnTiles();
 
+        _warningText.text = "WARNING! Enemies Incoming";
         StartCoroutine(WarningCoroutine(1));
 
         // Start main game loop
@@ -284,8 +286,8 @@ public class TileSystem : MonoBehaviour
         }
         else if (score > 100 * (_quadrantsActive+1))
         {
-            _infoText.updateInfoText(MenuState.Warning);
             _quadrantsActive++;
+            _warningText.text = "WARNING! Enemies Incoming";
             StartCoroutine(WarningCoroutine(1));
         }
     }
@@ -298,7 +300,7 @@ public class TileSystem : MonoBehaviour
             {
                 _enemySpawnTiles[i + (6 * _quadrantsActive)].Active = true;
             }
-            _infoText.updateInfoText(MenuState.Idle);
+            _warningText.text = "";
             yield break;
         }
         for (int i = 0; i < 6; i++)

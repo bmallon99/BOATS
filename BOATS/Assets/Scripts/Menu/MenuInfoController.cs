@@ -32,9 +32,6 @@ public class MenuInfoController : MonoBehaviour
                 //prefab = infoTextPrefabs[MenuState.HoldingNewShip];
                 _currentText = Instantiate(infoTextPrefabs[MenuState.HoldingNewShip], transform);
                 return;
-            case MenuState.Warning:
-                _currentText = Instantiate(infoTextPrefabs[MenuState.Warning], transform);
-                return;
         }
         //_currentText = Instantiate(prefab, transform);
     }

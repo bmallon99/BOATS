@@ -5,8 +5,7 @@ using UnityEngine.InputSystem;
 
 public enum MenuState {
     Idle,
-    HoldingNewShip,
-    Warning
+    HoldingNewShip
 }
 
 public class PlayerControls : MonoBehaviour
