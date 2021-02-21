@@ -14,6 +14,8 @@ public class TileSystem : MonoBehaviour
     private Vector2Int[,] _selectedRangeTiles;
     private List<GameObject> _friendlyBoats;
     private List<GameObject> _enemyBoats;
+    private EnemySpawnTile[] _enemySpawnTiles;
+    private Vector2Int[] _enemySpawnPositions;
 
     // Curreny and Score
     private int _score;
@@ -76,8 +78,30 @@ public class TileSystem : MonoBehaviour
         // Starting Money
         money = 200;
 
+        _InitEnemySpawnTiles();
+
         // Start main game loop
         StartCoroutine(MainTimerCoroutine());
+    }
+
+    // Initializers
+    private void _InitEnemySpawnTiles()
+    {
+        _enemySpawnTiles = new EnemySpawnTile[24];
+        Vector2Int topOrigin = new Vector2Int(13, 23);
+        Vector2Int rightOrigin = new Vector2Int(31, 9);
+        Vector2Int bottomOrigin = new Vector2Int(13, 0);
+        Vector2Int leftOrigin = new Vector2Int(0, 9);
+
+        for (int i = 0; i < 6; i++)
+        {
+            _enemySpawnTiles[i] = new EnemySpawnTile(Quadrant.Top, new Vector2Int(topOrigin.x + i, topOrigin.y), true);
+            _enemySpawnTiles[i + 6] = new EnemySpawnTile(Quadrant.Right, new Vector2Int(rightOrigin.x, rightOrigin.y + i), true);
+            _enemySpawnTiles[i + 12] = new EnemySpawnTile(Quadrant.Bottom, new Vector2Int(bottomOrigin.x + i, bottomOrigin.y), true);
+            _enemySpawnTiles[i + 18] = new EnemySpawnTile(Quadrant.Left, new Vector2Int(leftOrigin.x, leftOrigin.y + i), true);
+
+        }
+        _enemySpawnPositions = _enemySpawnTiles.Select(t => t.TilePosition).ToArray<Vector2Int>();
     }
 
 
@@ -129,7 +153,8 @@ public class TileSystem : MonoBehaviour
             Vector2Int[] occupyingTiles = occupier.GetTilesOccupied(location);
 
             // If all tiles are empty (i.e. valid for placing)
-            if (occupyingTiles.All(tile => IsTileEmpty(tile)))
+            if (occupyingTiles.All(tile => IsTileEmpty(tile)) &&
+                occupyingTiles.All(tile => !(_enemySpawnPositions.Contains<Vector2Int>(tile))))
             {
                 money -= newShipBehavior.value;
                 GameObject newShip = Instantiate(boatPrefab, boatPosition, Quaternion.Euler(Vector3.back * (int)occupier.rotation));
@@ -212,31 +237,34 @@ public class TileSystem : MonoBehaviour
 
     public Vector2Int GetSpawnLocation()
     {
-        int quadrant = _random.Next(4);
+        int tileIndex = _random.Next(24);
+        EnemySpawnTile tile = _enemySpawnTiles[tileIndex];
         TileOccupier occupier = EnemyBoatPrefabs[0].GetComponent<TileOccupier>();
 
-        switch (quadrant)
+        switch (tile.Quadrant)
         {
-            case 0:
+            case Quadrant.Right:
                 occupier.rotation = (OccupierRotation)0;
-                return new Vector2Int(31, 12);
+                break;
 
-            case 1:
+            case Quadrant.Bottom:
                 occupier.rotation = (OccupierRotation)90;
-                return new Vector2Int(16, 0);
+                break;
                 
 
-            case 2:
+            case Quadrant.Left:
                 occupier.rotation = (OccupierRotation)180;
-                return new Vector2Int(0, 12);
+                break;
 
-            case 3:
+            case Quadrant.Top:
                 occupier.rotation = (OccupierRotation)270;
-                return new Vector2Int(16, 23);
+                break;
 
             default:
                 throw new System.Exception("Random Failed");
         }
+
+        return tile.TilePosition;
     }
 
 
@@ -297,7 +325,9 @@ public class TileSystem : MonoBehaviour
         _selectedRangeTiles = range;
 
         // Check if new tiles are valid
-        Color selectionColor = tiles.All(tile => IsTileEmpty(tile)) ? Color.green : Color.red;
+        Color selectionColor = (tiles.All(tile => IsTileEmpty(tile)) &&
+                                tiles.All(tile => !(_enemySpawnPositions.Contains<Vector2Int>(tile))))
+                                ? Color.green : Color.red;
 
         // Set appropriate color for new tiles
         foreach (Vector2Int tile in tiles)
