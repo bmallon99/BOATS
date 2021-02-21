@@ -7,7 +7,6 @@ using System.Linq;
 
 public class TileSystem : MonoBehaviour
 {
-    public int SpawnInterval;
     private int _ticksSinceLastSpawn;
     private TileOccupier[,] _tileArray;
     private Tilemap _tilemap;
@@ -16,7 +15,28 @@ public class TileSystem : MonoBehaviour
     private List<GameObject> _friendlyBoats;
     private List<GameObject> _enemyBoats;
 
+    // Curreny and Score
+    private int _score;
+    private int _money;
+    public int score
+    {
+        get => _score;
+        set
+        {
+            _score = value;
+        }
+    }
+    public int money
+    {
+        get => _money;
+        set
+        {
+            _money = value;
+        }
+    }
+
     // Unity Editor
+    public int SpawnInterval;
     public GameObject[] EnemyBoatPrefabs; // possibly temporary
     public GameObject bulletPrefab;
 
@@ -53,6 +73,9 @@ public class TileSystem : MonoBehaviour
             }
         }
 
+        // Starting Money
+        money = 200;
+
         // Start main game loop
         StartCoroutine(MainTimerCoroutine());
     }
@@ -72,7 +95,7 @@ public class TileSystem : MonoBehaviour
         // Spawning based on specified interval
         if (_ticksSinceLastSpawn > SpawnInterval)
         {
-            PlaceShip(EnemyBoatPrefabs[0], GetSpawnLocation());
+            PlaceEnemyShip(EnemyBoatPrefabs[0], GetSpawnLocation());
             _ticksSinceLastSpawn = 1;
         }
         
@@ -89,9 +112,15 @@ public class TileSystem : MonoBehaviour
 
     // MARK - Ship Placement
 
-    public bool PlaceShip(GameObject boatPrefab, Vector2Int location)
+    public bool PlaceFriendlyShip(GameObject boatPrefab, Vector2Int location)
     {
-        if (IsTilePointInBounds(location))
+        BoatBehavior newShipBehavior = boatPrefab.GetComponent<BoatBehavior>();
+        if (newShipBehavior.value > money)
+        {
+            // UI warning about not enough money
+            return false;
+        }
+        else if (IsTilePointInBounds(location))
         {
             TileOccupier occupier = boatPrefab.GetComponent<TileOccupier>();
             Vector2Int boatCoordinate = occupier.GetFocusCoordinate(location);
@@ -102,15 +131,11 @@ public class TileSystem : MonoBehaviour
             // If all tiles are empty (i.e. valid for placing)
             if (occupyingTiles.All(tile => IsTileEmpty(tile)))
             {
+                money -= newShipBehavior.value;
                 GameObject newShip = Instantiate(boatPrefab, boatPosition, Quaternion.Euler(Vector3.back * (int)occupier.rotation));
                 TileOccupier newShipOccupier = newShip.GetComponent<TileOccupier>();
-                if (newShipOccupier.type==TileOccupierType.Friendly)
-                {
-                    _friendlyBoats.Add(newShip);
-                } else
-                {
-                    _enemyBoats.Add(newShip);
-                }
+          
+                _friendlyBoats.Add(newShip);               
 
                 foreach (Vector2Int tile in occupyingTiles)
                 {
@@ -125,8 +150,45 @@ public class TileSystem : MonoBehaviour
         return false;
     }
 
+    public bool PlaceEnemyShip(GameObject boatPrefab, Vector2Int location)
+    {
+        
+        TileOccupier occupier = boatPrefab.GetComponent<TileOccupier>();
+        Vector2Int boatCoordinate = occupier.GetFocusCoordinate(location);
+        Vector3 boatPosition = TileToWorldPoint(boatCoordinate);
+
+        Vector2Int[] occupyingTiles = occupier.GetTilesOccupied(location);
+        Vector2Int[] visibleTiles = Array.FindAll<Vector2Int>(occupyingTiles, t => IsTilePointInBounds(t));
+
+        // If all visible tiles are empty (i.e. valid for placing)
+        if (visibleTiles.All(tile => IsTileEmpty(tile)))
+        {
+            GameObject newShip = Instantiate(boatPrefab, boatPosition, Quaternion.Euler(Vector3.back * (int)occupier.rotation));
+            TileOccupier newShipOccupier = newShip.GetComponent<TileOccupier>();
+            _enemyBoats.Add(newShip);
+
+            foreach (Vector2Int tile in visibleTiles)
+            {
+                _tileArray[tile.x, tile.y] = newShipOccupier;
+            }
+
+            newShipOccupier.GetComponent<BoatBehavior>().InitBoat(location);
+            return true;
+        }
+        
+
+        return false;
+    }
+
     public bool TryMove(TileOccupier occupier, Vector2Int[] oldTiles, Vector2Int[] newTiles)
     {
+        // only check the currently visible tiles since enemies can be partially off screen
+        if (occupier.type == TileOccupierType.Enemy)
+        {
+            oldTiles = Array.FindAll<Vector2Int>(oldTiles, t => IsTilePointInBounds(t));
+            newTiles = Array.FindAll<Vector2Int>(newTiles, t => IsTilePointInBounds(t));
+        }
+
         if (newTiles.All(tile => {
             return IsTileEmpty(tile) || oldTiles.Contains(tile);
         }))
@@ -157,20 +219,20 @@ public class TileSystem : MonoBehaviour
         {
             case 0:
                 occupier.rotation = (OccupierRotation)0;
-                return new Vector2Int(30, 12);
+                return new Vector2Int(31, 12);
 
             case 1:
                 occupier.rotation = (OccupierRotation)90;
-                return new Vector2Int(16, 1);
+                return new Vector2Int(16, 0);
                 
 
             case 2:
                 occupier.rotation = (OccupierRotation)180;
-                return new Vector2Int(1, 12);
+                return new Vector2Int(0, 12);
 
             case 3:
                 occupier.rotation = (OccupierRotation)270;
-                return new Vector2Int(16, 22);
+                return new Vector2Int(16, 23);
 
             default:
                 throw new System.Exception("Random Failed");
@@ -316,8 +378,26 @@ public class TileSystem : MonoBehaviour
     }
 
 
-    // MARK - Ship Death
+    // MARK - Ship Removal
 
+    public void Sold(GameObject soldBoat, Vector2Int location)
+    {
+        TileOccupier occupier = soldBoat.GetComponent<TileOccupier>();
+        Vector3 boatPosition = TileToWorldPoint(occupier.GetFocusCoordinate(location));
+        BoatBehavior behavior = soldBoat.GetComponent<BoatBehavior>();
+
+        Vector2Int[] occupyingTiles = occupier.GetTilesOccupied(location);
+
+        foreach (Vector2Int tile in occupyingTiles)
+        {
+            _tileArray[tile.x, tile.y] = null;
+        }
+
+        money += behavior.sellValue;
+        _friendlyBoats.Remove(soldBoat);
+        
+        Destroy(soldBoat);
+    }
 
     public void Died(GameObject deadBoat, Vector2Int location)
     {
@@ -337,6 +417,9 @@ public class TileSystem : MonoBehaviour
         }
         else
         {
+            BoatBehavior deadBehavior = deadBoat.GetComponent<BoatBehavior>();
+            money += deadBehavior.value;
+            score += deadBehavior.value;
             _enemyBoats.Remove(deadBoat);
         }
         Destroy(deadBoat);

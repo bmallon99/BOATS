@@ -8072,7 +8072,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff86e8cf0c20f4421af70e65b9604ed8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SpawnInterval: 5
+  SpawnInterval: 0
   EnemyBoatPrefabs:
   - {fileID: 5567843318003924298, guid: 18f325b596a73ee488147ac3944ad0de, type: 3}
   bulletPrefab: {fileID: 3512853659860519963, guid: 429995a101b474de68b27841862898e4,
@@ -8643,6 +8643,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   totalHealth: 1000000
+  value: 0
   healthTextPrefab: {fileID: 3191218632300812829, guid: 78b08a5235a7041369a7d0826eecc8d7,
     type: 3}
   range: 0
