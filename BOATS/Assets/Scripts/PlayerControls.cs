@@ -65,7 +65,7 @@ public class PlayerControls : MonoBehaviour
         if (state == MenuState.HoldingNewShip)
         {
             Vector2Int tilePosition = _tileSystem.WorldToTilePoint(worldMousePosition);
-            if (_tileSystem.PlaceShip(heldObject, tilePosition))
+            if (_tileSystem.PlaceFriendlyShip(heldObject, tilePosition))
             {
                 state = MenuState.Idle;
                 Destroy(heldObject);

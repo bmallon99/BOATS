@@ -18,6 +18,11 @@ public abstract class BoatBehavior : MonoBehaviour
     }
 
     public int totalHealth;
+    public int value;
+    public int sellValue
+    {
+        get => value / 2;
+    }
     protected Vector2Int _boatPosition;
     public Vector2Int BoatPosition { get; set; }
 
