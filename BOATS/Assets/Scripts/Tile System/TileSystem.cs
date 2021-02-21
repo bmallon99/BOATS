@@ -142,7 +142,7 @@ public class TileSystem : MonoBehaviour
                     _tileArray[tile.x, tile.y] = newShipOccupier;
                 }
 
-                newShipBehavior.InitBoat(location);
+                newShipOccupier.GetComponent<BoatBehavior>().InitBoat(location);
                 return true;
             }
         }
