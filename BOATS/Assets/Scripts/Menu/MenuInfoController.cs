@@ -21,18 +21,8 @@ public class MenuInfoController : MonoBehaviour
     public void updateInfoText(MenuState state)
     {
         Destroy(_currentText);
-        //GameObject prefab = infoTextPrefabs[MenuState.Idle]; 
-        switch (state)
-        {
-            case MenuState.Idle:
-                //prefab = infoTextPrefabs[MenuState.Idle];
-                _currentText = Instantiate(infoTextPrefabs[MenuState.Idle], transform);
-                return;
-            case MenuState.HoldingNewShip:
-                //prefab = infoTextPrefabs[MenuState.HoldingNewShip];
-                _currentText = Instantiate(infoTextPrefabs[MenuState.HoldingNewShip], transform);
-                return;
-        }
-        //_currentText = Instantiate(prefab, transform);
+        //GameObject _prefab = infoTextPrefabs[state];
+        _currentText = Instantiate(infoTextPrefabs[state], transform);
+        
     }
 }
