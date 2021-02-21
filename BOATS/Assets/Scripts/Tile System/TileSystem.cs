@@ -3,17 +3,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.UI;
 using System.Linq;
 
 public class TileSystem : MonoBehaviour
 {
     private int _ticksSinceLastSpawn;
+    private int _quadrantsActive;
     private TileOccupier[,] _tileArray;
     private Tilemap _tilemap;
     private Vector2Int[] _selectedTiles;
     private Vector2Int[,] _selectedRangeTiles;
     private List<GameObject> _friendlyBoats;
     private List<GameObject> _enemyBoats;
+    private EnemySpawnTile[] _enemySpawnTiles;
+    private Vector2Int[] _enemySpawnPositions;
+    private Text _warningText;
 
     // Curreny and Score
     private int _score;
@@ -50,8 +55,10 @@ public class TileSystem : MonoBehaviour
         _selectedTiles = new Vector2Int[0];
         _selectedRangeTiles = new Vector2Int[0,0];
         _ticksSinceLastSpawn = 1;
+        _quadrantsActive = 0;
         _friendlyBoats = new List<GameObject>();
         _enemyBoats = new List<GameObject>();
+        _warningText = GameObject.Find("WarningText").GetComponent<Text>();
 
         // Clear Tile Flags
         for (int i = 0; i < TileConstants.TileMapWidth; i++)
@@ -75,9 +82,34 @@ public class TileSystem : MonoBehaviour
 
         // Starting Money
         money = 200;
+        score = 0;
+
+        _InitEnemySpawnTiles();
+
+        _warningText.text = "WARNING! Enemies Incoming";
+        StartCoroutine(WarningCoroutine(1));
 
         // Start main game loop
         StartCoroutine(MainTimerCoroutine());
+    }
+
+    // Initializers
+    private void _InitEnemySpawnTiles()
+    {
+        _enemySpawnTiles = new EnemySpawnTile[24];
+        Vector2Int topOrigin = new Vector2Int(13, 23);
+        Vector2Int rightOrigin = new Vector2Int(31, 9);
+        Vector2Int bottomOrigin = new Vector2Int(13, 0);
+        Vector2Int leftOrigin = new Vector2Int(0, 9);
+
+        for (int i = 0; i < 6; i++)
+        {
+            _enemySpawnTiles[i] = new EnemySpawnTile(Quadrant.Top, new Vector2Int(topOrigin.x + i, topOrigin.y), true);
+            _enemySpawnTiles[i + 6] = new EnemySpawnTile(Quadrant.Right, new Vector2Int(rightOrigin.x, rightOrigin.y + i), false);
+            _enemySpawnTiles[i + 12] = new EnemySpawnTile(Quadrant.Bottom, new Vector2Int(bottomOrigin.x + i, bottomOrigin.y), false);
+            _enemySpawnTiles[i + 18] = new EnemySpawnTile(Quadrant.Left, new Vector2Int(leftOrigin.x, leftOrigin.y + i), false);
+        }
+        _enemySpawnPositions = _enemySpawnTiles.Select(t => t.TilePosition).ToArray<Vector2Int>();
     }
 
 
@@ -91,6 +123,8 @@ public class TileSystem : MonoBehaviour
         {
             enemy.GetComponent<BoatBehavior>().Turn();
         }
+
+        CheckScore();
 
         // Spawning based on specified interval
         if (_ticksSinceLastSpawn > SpawnInterval)
@@ -129,7 +163,8 @@ public class TileSystem : MonoBehaviour
             Vector2Int[] occupyingTiles = occupier.GetTilesOccupied(location);
 
             // If all tiles are empty (i.e. valid for placing)
-            if (occupyingTiles.All(tile => IsTileEmpty(tile)))
+            if (occupyingTiles.All(tile => IsTileEmpty(tile)) &&
+                occupyingTiles.All(tile => !(_enemySpawnPositions.Contains<Vector2Int>(tile))))
             {
                 money -= newShipBehavior.value;
                 GameObject newShip = Instantiate(boatPrefab, boatPosition, Quaternion.Euler(Vector3.back * (int)occupier.rotation));
@@ -212,31 +247,82 @@ public class TileSystem : MonoBehaviour
 
     public Vector2Int GetSpawnLocation()
     {
-        int quadrant = _random.Next(4);
+        int numActive = Array.FindAll<EnemySpawnTile>(_enemySpawnTiles, t => t.Active).Length;
+        int tileIndex = _random.Next(numActive);
+        EnemySpawnTile tile = _enemySpawnTiles[tileIndex];
         TileOccupier occupier = EnemyBoatPrefabs[0].GetComponent<TileOccupier>();
 
-        switch (quadrant)
+        switch (tile.Quadrant)
         {
-            case 0:
+            case Quadrant.Right:
                 occupier.rotation = (OccupierRotation)0;
-                return new Vector2Int(31, 12);
+                break;
 
-            case 1:
+            case Quadrant.Bottom:
                 occupier.rotation = (OccupierRotation)90;
-                return new Vector2Int(16, 0);
+                break;
                 
 
-            case 2:
+            case Quadrant.Left:
                 occupier.rotation = (OccupierRotation)180;
-                return new Vector2Int(0, 12);
+                break;
 
-            case 3:
+            case Quadrant.Top:
                 occupier.rotation = (OccupierRotation)270;
-                return new Vector2Int(16, 23);
+                break;
 
             default:
                 throw new System.Exception("Random Failed");
         }
+
+        return tile.TilePosition;
+    }
+
+    void CheckScore()
+    {
+        if (_quadrantsActive >= 4)
+        {
+            return;
+        }
+        else if (score > 100 * (_quadrantsActive+1))
+        {
+            _quadrantsActive++;
+            _warningText.text = "WARNING! Enemies Incoming";
+            StartCoroutine(WarningCoroutine(1));
+        }
+    }
+
+    IEnumerator WarningCoroutine(int count)
+    {
+        if (count>5)
+        {
+            for (int i = 0; i < 6; i++)
+            {
+                _enemySpawnTiles[i + (6 * _quadrantsActive)].Active = true;
+            }
+            _warningText.text = "";
+            yield break;
+        }
+        for (int i = 0; i < 6; i++)
+        {
+            Vector2Int location = _enemySpawnTiles[i + (6 * (_quadrantsActive))].TilePosition;
+            if (IsTilePointInBounds(location))
+            {
+                _tilemap.SetColor(new Vector3Int(location.x, location.y, 0), Color.red);
+            }
+        }
+        yield return new WaitForSeconds(0.3f);
+        for (int i = 0; i < 6; i++)
+        {
+            Vector2Int location = _enemySpawnTiles[i + (6 * (_quadrantsActive))].TilePosition;
+            if (IsTilePointInBounds(location))
+            {
+                _tilemap.SetColor(new Vector3Int(location.x, location.y, 0), Color.white);
+            }
+        }
+        yield return new WaitForSeconds(0.7f);
+        count++;
+        StartCoroutine(WarningCoroutine(count));
     }
 
 
@@ -297,7 +383,9 @@ public class TileSystem : MonoBehaviour
         _selectedRangeTiles = range;
 
         // Check if new tiles are valid
-        Color selectionColor = tiles.All(tile => IsTileEmpty(tile)) ? Color.green : Color.red;
+        Color selectionColor = (tiles.All(tile => IsTileEmpty(tile)) &&
+                                tiles.All(tile => !(_enemySpawnPositions.Contains<Vector2Int>(tile))))
+                                ? Color.green : Color.red;
 
         // Set appropriate color for new tiles
         foreach (Vector2Int tile in tiles)
@@ -402,9 +490,9 @@ public class TileSystem : MonoBehaviour
     public void Died(GameObject deadBoat, Vector2Int location)
     {
         TileOccupier occupier = deadBoat.GetComponent<TileOccupier>();
-        Vector3 boatPosition = TileToWorldPoint(occupier.GetFocusCoordinate(location));
+        BoatBehavior deadBehavior = deadBoat.GetComponent<BoatBehavior>();
 
-        Vector2Int[] occupyingTiles = occupier.GetTilesOccupied(location);
+        Vector2Int[] occupyingTiles = occupier.GetTilesOccupied(deadBehavior.BoatPosition);
 
         foreach (Vector2Int tile in occupyingTiles)
         {
@@ -417,7 +505,6 @@ public class TileSystem : MonoBehaviour
         }
         else
         {
-            BoatBehavior deadBehavior = deadBoat.GetComponent<BoatBehavior>();
             money += deadBehavior.value;
             score += deadBehavior.value;
             _enemyBoats.Remove(deadBoat);

@@ -8092,7 +8092,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff86e8cf0c20f4421af70e65b9604ed8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SpawnInterval: 0
+  SpawnInterval: 5
   EnemyBoatPrefabs:
   - {fileID: 5567843318003924298, guid: 18f325b596a73ee488147ac3944ad0de, type: 3}
   bulletPrefab: {fileID: 3512853659860519963, guid: 429995a101b474de68b27841862898e4,
