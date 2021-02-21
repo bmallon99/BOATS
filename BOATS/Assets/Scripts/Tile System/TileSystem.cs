@@ -9,7 +9,6 @@ public class TileSystem : MonoBehaviour
 {
     private int _ticksSinceLastSpawn;
     private int _quadrantsActive;
-    private bool _activeWarning;
     private TileOccupier[,] _tileArray;
     private Tilemap _tilemap;
     private Vector2Int[] _selectedTiles;
@@ -18,6 +17,7 @@ public class TileSystem : MonoBehaviour
     private List<GameObject> _enemyBoats;
     private EnemySpawnTile[] _enemySpawnTiles;
     private Vector2Int[] _enemySpawnPositions;
+    private MenuInfoController _infoText;
 
     // Curreny and Score
     private int _score;
@@ -54,10 +54,10 @@ public class TileSystem : MonoBehaviour
         _selectedTiles = new Vector2Int[0];
         _selectedRangeTiles = new Vector2Int[0,0];
         _ticksSinceLastSpawn = 1;
-        _quadrantsActive = 1;
-        _activeWarning = true;
+        _quadrantsActive = 0;
         _friendlyBoats = new List<GameObject>();
         _enemyBoats = new List<GameObject>();
+        _infoText = FindObjectOfType<MenuInfoController>();
 
         // Clear Tile Flags
         for (int i = 0; i < TileConstants.TileMapWidth; i++)
@@ -81,8 +81,11 @@ public class TileSystem : MonoBehaviour
 
         // Starting Money
         money = 200;
+        score = 0;
 
         _InitEnemySpawnTiles();
+
+        StartCoroutine(WarningCoroutine(1));
 
         // Start main game loop
         StartCoroutine(MainTimerCoroutine());
@@ -126,11 +129,6 @@ public class TileSystem : MonoBehaviour
         {
             PlaceEnemyShip(EnemyBoatPrefabs[0], GetSpawnLocation());
             _ticksSinceLastSpawn = 1;
-            _activeWarning = false;
-        }
-        else if (_activeWarning)
-        {
-            StartCoroutine(WarningCoroutine());
         }
         
         // All friendlies check if they can fire and do so
@@ -284,22 +282,28 @@ public class TileSystem : MonoBehaviour
         {
             return;
         }
-        else if (score > 100 * _quadrantsActive)
+        else if (score > 100 * (_quadrantsActive+1))
+        {
+            _infoText.updateInfoText(MenuState.Warning);
+            _quadrantsActive++;
+            StartCoroutine(WarningCoroutine(1));
+        }
+    }
+
+    IEnumerator WarningCoroutine(int count)
+    {
+        if (count>5)
         {
             for (int i = 0; i < 6; i++)
             {
                 _enemySpawnTiles[i + (6 * _quadrantsActive)].Active = true;
             }
-            _quadrantsActive++;
-            _activeWarning = true;
+            _infoText.updateInfoText(MenuState.Idle);
+            yield break;
         }
-    }
-
-    IEnumerator WarningCoroutine()
-    {
         for (int i = 0; i < 6; i++)
         {
-            Vector2Int location = _enemySpawnTiles[i + (6 * (_quadrantsActive-1))].TilePosition;
+            Vector2Int location = _enemySpawnTiles[i + (6 * (_quadrantsActive))].TilePosition;
             if (IsTilePointInBounds(location))
             {
                 _tilemap.SetColor(new Vector3Int(location.x, location.y, 0), Color.red);
@@ -308,12 +312,15 @@ public class TileSystem : MonoBehaviour
         yield return new WaitForSeconds(0.3f);
         for (int i = 0; i < 6; i++)
         {
-            Vector2Int location = _enemySpawnTiles[i + (6 * (_quadrantsActive-1))].TilePosition;
+            Vector2Int location = _enemySpawnTiles[i + (6 * (_quadrantsActive))].TilePosition;
             if (IsTilePointInBounds(location))
             {
                 _tilemap.SetColor(new Vector3Int(location.x, location.y, 0), Color.white);
             }
         }
+        yield return new WaitForSeconds(0.7f);
+        count++;
+        StartCoroutine(WarningCoroutine(count));
     }
 
 
