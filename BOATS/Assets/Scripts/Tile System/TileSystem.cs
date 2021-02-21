@@ -15,6 +15,7 @@ public class TileSystem : MonoBehaviour
     private List<GameObject> _friendlyBoats;
     private List<GameObject> _enemyBoats;
     private EnemySpawnTile[] _enemySpawnTiles;
+    private Vector2Int[] _enemySpawnPositions;
 
     // Curreny and Score
     private int _score;
@@ -87,7 +88,7 @@ public class TileSystem : MonoBehaviour
     private void _InitEnemySpawnTiles()
     {
         _enemySpawnTiles = new EnemySpawnTile[24];
-        Vector2Int topOrigin = new Vector2Int(13, 31);
+        Vector2Int topOrigin = new Vector2Int(13, 23);
         Vector2Int rightOrigin = new Vector2Int(31, 9);
         Vector2Int bottomOrigin = new Vector2Int(13, 0);
         Vector2Int leftOrigin = new Vector2Int(0, 9);
@@ -100,6 +101,7 @@ public class TileSystem : MonoBehaviour
             _enemySpawnTiles[i + 18] = new EnemySpawnTile(Quadrant.Left, new Vector2Int(leftOrigin.x, leftOrigin.y + i), true);
 
         }
+        _enemySpawnPositions = _enemySpawnTiles.Select(t => t.TilePosition).ToArray<Vector2Int>();
     }
 
 
@@ -151,7 +153,8 @@ public class TileSystem : MonoBehaviour
             Vector2Int[] occupyingTiles = occupier.GetTilesOccupied(location);
 
             // If all tiles are empty (i.e. valid for placing)
-            if (occupyingTiles.All(tile => IsTileEmpty(tile)))
+            if (occupyingTiles.All(tile => IsTileEmpty(tile)) &&
+                occupyingTiles.All(tile => !(_enemySpawnPositions.Contains<Vector2Int>(tile))))
             {
                 money -= newShipBehavior.value;
                 GameObject newShip = Instantiate(boatPrefab, boatPosition, Quaternion.Euler(Vector3.back * (int)occupier.rotation));
@@ -322,7 +325,9 @@ public class TileSystem : MonoBehaviour
         _selectedRangeTiles = range;
 
         // Check if new tiles are valid
-        Color selectionColor = tiles.All(tile => IsTileEmpty(tile)) ? Color.green : Color.red;
+        Color selectionColor = (tiles.All(tile => IsTileEmpty(tile)) &&
+                                tiles.All(tile => !(_enemySpawnPositions.Contains<Vector2Int>(tile))))
+                                ? Color.green : Color.red;
 
         // Set appropriate color for new tiles
         foreach (Vector2Int tile in tiles)
