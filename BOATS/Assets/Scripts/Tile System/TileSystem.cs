@@ -19,6 +19,8 @@ public class TileSystem : MonoBehaviour
     private EnemySpawnTile[] _enemySpawnTiles;
     private Vector2Int[] _enemySpawnPositions;
     private Text _warningText;
+    private Text _moneyText;
+    private Text _scoreText;
 
     // Curreny and Score
     private int _score;
@@ -29,6 +31,7 @@ public class TileSystem : MonoBehaviour
         set
         {
             _score = value;
+            _scoreText.text = "Score " + _score.ToString();
         }
     }
     public int money
@@ -37,6 +40,7 @@ public class TileSystem : MonoBehaviour
         set
         {
             _money = value;
+            _moneyText.text = _money.ToString();
         }
     }
 
@@ -59,6 +63,8 @@ public class TileSystem : MonoBehaviour
         _friendlyBoats = new List<GameObject>();
         _enemyBoats = new List<GameObject>();
         _warningText = GameObject.Find("WarningText").GetComponent<Text>();
+        _moneyText = GameObject.Find("CurrentMoney").GetComponent<Text>();
+        _scoreText = GameObject.Find("CurrentScore").GetComponent<Text>();
 
         // Clear Tile Flags
         for (int i = 0; i < TileConstants.TileMapWidth; i++)
@@ -487,7 +493,7 @@ public class TileSystem : MonoBehaviour
         Destroy(soldBoat);
     }
 
-    public void Died(GameObject deadBoat, Vector2Int location)
+    public void Died(GameObject deadBoat)
     {
         TileOccupier occupier = deadBoat.GetComponent<TileOccupier>();
         BoatBehavior deadBehavior = deadBoat.GetComponent<BoatBehavior>();

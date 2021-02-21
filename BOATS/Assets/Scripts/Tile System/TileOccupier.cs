@@ -101,11 +101,13 @@ public class TileOccupier : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        _boat.Health -= damage;
-        if (_boat.Health <= 0)
+        if (_boat.Health > 0)
         {
-            Vector2Int location = (Vector2Int)_tileSystem.WorldToTilePoint(transform.position);
-            _tileSystem.Died(gameObject, location);
+            _boat.Health -= damage;
+            if (_boat.Health <= 0)
+            {
+                _tileSystem.Died(gameObject);
+            }
         }
     }
 }
