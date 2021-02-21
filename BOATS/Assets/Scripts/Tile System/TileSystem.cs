@@ -517,4 +517,11 @@ public class TileSystem : MonoBehaviour
         }
         Destroy(deadBoat);
     }
+
+    // MARK - Menu On Clicks
+
+    public TileOccupier GetSelectedShip(Vector2Int position)
+    {
+        return _tileArray[position.x, position.y];
+    }
 }

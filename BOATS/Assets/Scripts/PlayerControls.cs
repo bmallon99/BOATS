@@ -5,7 +5,9 @@ using UnityEngine.InputSystem;
 
 public enum MenuState {
     Idle,
-    HoldingNewShip
+    HoldingNewShip,
+    SelectingDefender1,
+    SelectingDefender2
 }
 
 public class PlayerControls : MonoBehaviour
@@ -62,16 +64,51 @@ public class PlayerControls : MonoBehaviour
     public void OnPrimaryClick()
     {
         // Ship Placement
-        if (state == MenuState.HoldingNewShip)
+        Vector2Int tilePosition = _tileSystem.WorldToTilePoint(worldMousePosition);
+        switch (state)
         {
-            Vector2Int tilePosition = _tileSystem.WorldToTilePoint(worldMousePosition);
-            if (_tileSystem.PlaceFriendlyShip(heldObject, tilePosition))
-            {
-                state = MenuState.Idle;
-                Destroy(heldObject);
-                _tileSystem.SelectTiles(new Vector2Int[0], new Vector2Int[0,0]);
-            }
+            case MenuState.HoldingNewShip:
+                
+                if (_tileSystem.PlaceFriendlyShip(heldObject, tilePosition))
+                {
+                    state = MenuState.Idle;
+                    Destroy(heldObject);
+                    _tileSystem.SelectTiles(new Vector2Int[0], new Vector2Int[0, 0]);
+                }
+                break;
+            case MenuState.Idle:
+                // if you aren't holding something, you probably want to see info about a ship
+                if (_tileSystem.IsTilePointInBounds(tilePosition))
+                {
+                    TileOccupier selectedShip = _tileSystem.GetSelectedShip(tilePosition);
+                    if (selectedShip != null)
+                    {
+                        BoatBehavior boatBehavior = selectedShip.GetComponent<BoatBehavior>();
+                        switch (boatBehavior.GetType().Name)
+                        {
+                            case "Defender1Behaviour":
+                                state = MenuState.SelectingDefender1;
+                                break;
+                            case "Defender2Behaviour":
+                                state = MenuState.SelectingDefender2;
+                                break;
+                            default:
+                                throw new System.Exception("Can't find boat type");
+
+                        }
+                    }
+                }
+                
+                break;
+            default:
+                // this is for clicking out of the menu for a selected ship
+                if (_tileSystem.IsTilePointInBounds(tilePosition))
+                {
+                    state = MenuState.Idle;
+                }
+                break;
         }
+        
     }
 
     public void OnSecondaryClick()

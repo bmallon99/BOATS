@@ -3,33 +3,37 @@ using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class ShipMenuSelector : MonoBehaviour
 {
-    private PlayerControls player;
-    private GameObject myShip;
+    private PlayerControls _player;
+    private GameObject _myShip;
+    private BoatBehavior _boatBehavior;
+
     void Start()
     {
-        player = Camera.main.GetComponent<PlayerControls>();
+        _player = Camera.main.GetComponent<PlayerControls>();
+        _boatBehavior = GetComponent<BoatBehavior>();
     }
     
     public void HoldShip(GameObject shipPrefab)
     {
-        bool differentShip = myShip != player.heldObject;
-        if (player.state == MenuState.Idle || differentShip)
+        bool differentShip = _myShip != _player.heldObject;
+        if (_player.state != MenuState.HoldingNewShip || differentShip)
         {
             if (differentShip)
             {
-                Destroy(player.heldObject);
+                Destroy(_player.heldObject);
             }
-            myShip = Instantiate(shipPrefab, player.worldMousePosition, new Quaternion());
-            player.heldObject = myShip;
-            player.state = MenuState.HoldingNewShip;    
+            _myShip = Instantiate(shipPrefab, _player.worldMousePosition, new Quaternion());
+            _player.heldObject = _myShip;
+            _player.state = MenuState.HoldingNewShip;    
         }
         else
         {
-            Destroy(myShip);
-            player.state = MenuState.Idle;
+            Destroy(_myShip);
+            _player.state = MenuState.Idle;
         }
     }
 }
