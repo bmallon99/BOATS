@@ -93,7 +93,7 @@ public class TileSystem : MonoBehaviour
         _InitEnemySpawnTiles();
 
         _warningText.text = "WARNING! Enemies Incoming";
-        StartCoroutine(WarningCoroutine(1));
+        StartCoroutine(EnemyIncoming(1));
 
         // Start main game loop
         StartCoroutine(MainTimerCoroutine());
@@ -157,7 +157,7 @@ public class TileSystem : MonoBehaviour
         BoatBehavior newShipBehavior = boatPrefab.GetComponent<BoatBehavior>();
         if (newShipBehavior.value > money)
         {
-            // UI warning about not enough money
+            StartCoroutine(NoMoney());
             return false;
         }
         else if (IsTilePointInBounds(location))
@@ -247,6 +247,15 @@ public class TileSystem : MonoBehaviour
         return false;
     }
 
+    IEnumerator NoMoney()
+    {
+        if (_warningText.text.Equals(""))
+        {
+            _warningText.text = "No Money";
+            yield return new WaitForSeconds(1);
+            _warningText.text = "";
+        }
+    }
 
     // MARK - Enemy Ship Spawning
     
@@ -294,11 +303,11 @@ public class TileSystem : MonoBehaviour
         {
             _quadrantsActive++;
             _warningText.text = "WARNING! Enemies Incoming";
-            StartCoroutine(WarningCoroutine(1));
+            StartCoroutine(EnemyIncoming(1));
         }
     }
 
-    IEnumerator WarningCoroutine(int count)
+    IEnumerator EnemyIncoming(int count)
     {
         if (count>5)
         {
@@ -328,7 +337,7 @@ public class TileSystem : MonoBehaviour
         }
         yield return new WaitForSeconds(0.7f);
         count++;
-        StartCoroutine(WarningCoroutine(count));
+        StartCoroutine(EnemyIncoming(count));
     }
 
 
