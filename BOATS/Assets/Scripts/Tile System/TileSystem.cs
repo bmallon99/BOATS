@@ -295,7 +295,7 @@ public class TileSystem : MonoBehaviour
 
     void CheckScore()
     {
-        if (_quadrantsActive >= 4)
+        if (_quadrantsActive >= 3)
         {
             return;
         }
@@ -483,13 +483,12 @@ public class TileSystem : MonoBehaviour
 
     // MARK - Ship Removal
 
-    public void Sold(GameObject soldBoat, Vector2Int location)
+    public void Sold(GameObject soldBoat)
     {
         TileOccupier occupier = soldBoat.GetComponent<TileOccupier>();
-        Vector3 boatPosition = TileToWorldPoint(occupier.GetFocusCoordinate(location));
         BoatBehavior behavior = soldBoat.GetComponent<BoatBehavior>();
 
-        Vector2Int[] occupyingTiles = occupier.GetTilesOccupied(location);
+        Vector2Int[] occupyingTiles = occupier.GetTilesOccupied(behavior.BoatPosition);
 
         foreach (Vector2Int tile in occupyingTiles)
         {
