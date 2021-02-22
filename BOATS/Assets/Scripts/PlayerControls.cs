@@ -12,7 +12,7 @@ public enum MenuState {
 
 public class PlayerControls : MonoBehaviour
 {
-    public GameObject heldObject;
+    public GameObject selectedObject;
     private MenuInfoController _controls;
     private MenuState _state;
     public MenuState state
@@ -51,12 +51,12 @@ public class PlayerControls : MonoBehaviour
         {
             Vector2 position = positionValue.Get<Vector2>();
             Vector3 worldPosition = Camera.main.ScreenToWorldPoint(position);
-            heldObject.transform.position = new Vector3(worldPosition.x, worldPosition.y, -1);
+            selectedObject.transform.position = new Vector3(worldPosition.x, worldPosition.y, -1);
 
             // Update Selected Tiles
             Vector2Int tilePosition = _tileSystem.WorldToTilePoint(worldPosition);
-            TileOccupier occupier = heldObject.GetComponent<TileOccupier>();
-            BoatBehavior behavior = heldObject.GetComponent<BoatBehavior>();
+            TileOccupier occupier = selectedObject.GetComponent<TileOccupier>();
+            BoatBehavior behavior = selectedObject.GetComponent<BoatBehavior>();
             _tileSystem.SelectTiles(occupier.GetTilesOccupied(tilePosition), behavior.GetFiringRange(occupier.GetFocusCoordinate(tilePosition)));
         }
     }
@@ -69,10 +69,10 @@ public class PlayerControls : MonoBehaviour
         {
             case MenuState.HoldingNewShip:
                 
-                if (_tileSystem.PlaceFriendlyShip(heldObject, tilePosition))
+                if (_tileSystem.PlaceFriendlyShip(selectedObject, tilePosition))
                 {
                     state = MenuState.Idle;
-                    Destroy(heldObject);
+                    Destroy(selectedObject);
                     _tileSystem.SelectTiles(new Vector2Int[0], new Vector2Int[0, 0]);
                 }
                 break;
@@ -81,6 +81,7 @@ public class PlayerControls : MonoBehaviour
                 if (_tileSystem.IsTilePointInBounds(tilePosition))
                 {
                     TileOccupier selectedShip = _tileSystem.GetSelectedShip(tilePosition);
+                    selectedObject = selectedShip.gameObject;
                     if (selectedShip != null)
                     {
                         BoatBehavior boatBehavior = selectedShip.GetComponent<BoatBehavior>();
@@ -116,13 +117,13 @@ public class PlayerControls : MonoBehaviour
         // Rotate the ship
         if (state == MenuState.HoldingNewShip)
         {
-            TileOccupier occupier = heldObject.GetComponent<TileOccupier>();
+            TileOccupier occupier = selectedObject.GetComponent<TileOccupier>();
             occupier.rotation = (OccupierRotation) (((int)occupier.rotation + 90) % 360);
             occupier.gameObject.transform.Rotate(Vector3.back, 90);
 
             // Update Selected Tiles
             Vector2Int tilePosition = _tileSystem.WorldToTilePoint(worldMousePosition);
-            BoatBehavior behavior = heldObject.GetComponent<BoatBehavior>();
+            BoatBehavior behavior = selectedObject.GetComponent<BoatBehavior>();
             _tileSystem.SelectTiles(occupier.GetTilesOccupied(tilePosition), behavior.GetFiringRange(occupier.GetFocusCoordinate(tilePosition)));
         }
     }

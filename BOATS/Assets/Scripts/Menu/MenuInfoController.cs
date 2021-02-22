@@ -6,10 +6,13 @@ public class MenuInfoController : MonoBehaviour
 {
     public InfoTextCollection infoTextPrefabs;
     private GameObject _currentText;
+    private PlayerControls _player;
+    private TileSystem _tileSystem;
 
     void Start()
     {
-        
+        _player = Camera.main.GetComponent<PlayerControls>();
+        _tileSystem = GameObject.FindObjectOfType<TileSystem>();
     }
 
     // Update is called once per frame
@@ -28,6 +31,7 @@ public class MenuInfoController : MonoBehaviour
 
     public void SellShip()
     {
-
+        _tileSystem.Sold(_player.selectedObject);
+        _player.state = MenuState.Idle;
     }
 }
