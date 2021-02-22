@@ -81,9 +81,9 @@ public class PlayerControls : MonoBehaviour
                 if (_tileSystem.IsTilePointInBounds(tilePosition))
                 {
                     TileOccupier selectedShip = _tileSystem.GetSelectedShip(tilePosition);
-                    selectedObject = selectedShip.gameObject;
                     if (selectedShip != null)
                     {
+                        selectedObject = selectedShip.gameObject;
                         BoatBehavior boatBehavior = selectedShip.GetComponent<BoatBehavior>();
                         switch (boatBehavior.GetType().Name)
                         {

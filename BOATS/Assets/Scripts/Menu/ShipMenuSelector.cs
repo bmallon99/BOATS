@@ -25,7 +25,7 @@ public class ShipMenuSelector : MonoBehaviour
         // hold new ship
         if (_player.state != MenuState.HoldingNewShip || differentShip)
         {
-            if (differentShip)
+            if (_player.state == MenuState.HoldingNewShip && differentShip)
             {
                 Destroy(_player.selectedObject);
             }
@@ -34,7 +34,7 @@ public class ShipMenuSelector : MonoBehaviour
             _player.state = MenuState.HoldingNewShip;    
         }
         // put back
-        else
+        else if (_player.state == MenuState.HoldingNewShip)
         {
             // unhighlight
             _tileSystem.SelectTiles(new Vector2Int[0], new Vector2Int[0,0]);

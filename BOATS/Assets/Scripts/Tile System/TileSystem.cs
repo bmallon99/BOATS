@@ -167,13 +167,14 @@ public class TileSystem : MonoBehaviour
     public bool PlaceFriendlyShip(GameObject boatPrefab, Vector2Int location)
     {
         BoatBehavior newShipBehavior = boatPrefab.GetComponent<BoatBehavior>();
-        if (newShipBehavior.value > money)
+        if (IsTilePointInBounds(location))
         {
-            StartCoroutine(NoMoney());
-            return false;
-        }
-        else if (IsTilePointInBounds(location))
-        {
+            if (newShipBehavior.value > money)
+            {
+                StartCoroutine(NoMoney());
+                return false;
+            }
+
             TileOccupier occupier = boatPrefab.GetComponent<TileOccupier>();
             Vector2Int boatCoordinate = occupier.GetFocusCoordinate(location);
             Vector3 boatPosition = TileToWorldPoint(boatCoordinate);
@@ -265,7 +266,7 @@ public class TileSystem : MonoBehaviour
         if (_warningText.text.Equals(""))
         {
             _warningImage.enabled = true;
-            _warningText.text = "No Money";
+            _warningText.text = "Not Enough Money";
             yield return new WaitForSeconds(1);
             _warningText.text = "";
             _warningImage.enabled = false;
