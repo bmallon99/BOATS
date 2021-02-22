@@ -9,6 +9,8 @@ TagManager:
   - Left Click
   - Health Bars
   - Base
+  - Sell Text
+  - Health Text
   layers:
   - Default
   - TransparentFX

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MenuInfoController : MonoBehaviour
 {
@@ -26,7 +27,15 @@ public class MenuInfoController : MonoBehaviour
         Destroy(_currentText);
         //GameObject _prefab = infoTextPrefabs[state];
         _currentText = Instantiate(infoTextPrefabs[state], transform);
-        
+        if (state != MenuState.Idle && state != MenuState.HoldingNewShip)
+        {
+            Text HealthText = GameObject.FindWithTag("Health Text").GetComponent<Text>();
+            Text SellText = GameObject.FindWithTag("Sell Text").GetComponent<Text>();
+            BoatBehavior boatBehavior = _player.selectedObject.GetComponent<BoatBehavior>();
+
+            HealthText.text = "Health: " + boatBehavior.Health.ToString();
+            SellText.text = "Sell (+$" + boatBehavior.sellValue.ToString() + ")";
+        }
     }
 
     public void SellShip()
