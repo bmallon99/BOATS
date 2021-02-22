@@ -25,4 +25,9 @@ public class MenuInfoController : MonoBehaviour
         _currentText = Instantiate(infoTextPrefabs[state], transform);
         
     }
+
+    public void SellShip()
+    {
+
+    }
 }
