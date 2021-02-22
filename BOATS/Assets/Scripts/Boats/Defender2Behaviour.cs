@@ -19,7 +19,7 @@ public class Defender2Behaviour : BoatBehavior
 
     public override void Turn()
     {
-        //Attack();
+        Attack();
     }
 
     protected override bool Move() { return false; }
