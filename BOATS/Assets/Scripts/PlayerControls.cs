@@ -93,6 +93,8 @@ public class PlayerControls : MonoBehaviour
                             case "Defender2Behaviour":
                                 state = MenuState.SelectingDefender2;
                                 break;
+                            case "Enemy1Behavior":
+                                break;
                             default:
                                 throw new System.Exception("Can't find boat type");
 
