@@ -184,6 +184,7 @@ public class TileSystem : MonoBehaviour
                 }
 
                 newShipOccupier.GetComponent<BoatBehavior>().InitBoat(location);
+                newShipOccupier.GetComponent<SpriteRenderer>().sortingOrder = 1;
                 return true;
             }
         }
