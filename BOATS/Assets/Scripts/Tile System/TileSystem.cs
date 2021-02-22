@@ -8,16 +8,26 @@ using System.Linq;
 
 public class TileSystem : MonoBehaviour
 {
+    // Internal clock
     private int _ticksSinceLastSpawn;
     private int _quadrantsActive;
+
+    // Tile representation
     private TileOccupier[,] _tileArray;
     private Tilemap _tilemap;
+
+    // Selection
     private Vector2Int[] _selectedTiles;
     private Vector2Int[,] _selectedRangeTiles;
+
+    // Boat types
     private List<GameObject> _friendlyBoats;
     private List<GameObject> _enemyBoats;
     private EnemySpawnTile[] _enemySpawnTiles;
     private Vector2Int[] _enemySpawnPositions;
+
+    // Canvas elements
+    private Image _warningImage;
     private Text _warningText;
     private Text _moneyText;
     private Text _scoreText;
@@ -65,6 +75,7 @@ public class TileSystem : MonoBehaviour
         _warningText = GameObject.Find("WarningText").GetComponent<Text>();
         _moneyText = GameObject.Find("CurrentMoney").GetComponent<Text>();
         _scoreText = GameObject.Find("CurrentScore").GetComponent<Text>();
+        _warningImage = GameObject.Find("WarningBackground").GetComponent<Image>();
 
         // Clear Tile Flags
         for (int i = 0; i < TileConstants.TileMapWidth; i++)
@@ -92,6 +103,7 @@ public class TileSystem : MonoBehaviour
 
         _InitEnemySpawnTiles();
 
+        _warningImage.enabled = true;
         _warningText.text = "WARNING! Enemies Incoming";
         StartCoroutine(EnemyIncoming(1));
 
@@ -251,9 +263,11 @@ public class TileSystem : MonoBehaviour
     {
         if (_warningText.text.Equals(""))
         {
+            _warningImage.enabled = true;
             _warningText.text = "No Money";
             yield return new WaitForSeconds(1);
             _warningText.text = "";
+            _warningImage.enabled = false;
         }
     }
 
@@ -302,6 +316,7 @@ public class TileSystem : MonoBehaviour
         else if (score > 100 * (_quadrantsActive+1))
         {
             _quadrantsActive++;
+            _warningImage.enabled = true;
             _warningText.text = "WARNING! Enemies Incoming";
             StartCoroutine(EnemyIncoming(1));
         }
@@ -316,6 +331,7 @@ public class TileSystem : MonoBehaviour
                 _enemySpawnTiles[i + (6 * _quadrantsActive)].Active = true;
             }
             _warningText.text = "";
+            _warningImage.enabled = false;
             yield break;
         }
         for (int i = 0; i < 6; i++)
