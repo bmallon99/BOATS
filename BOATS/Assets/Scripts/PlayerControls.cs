@@ -95,6 +95,8 @@ public class PlayerControls : MonoBehaviour
                                 break;
                             case "Enemy1Behavior":
                                 break;
+                            case "BaseBehaviour":
+                                break;
                             default:
                                 throw new System.Exception("Can't find boat type");
 

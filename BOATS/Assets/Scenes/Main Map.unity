@@ -8349,7 +8349,7 @@ PrefabInstance:
     - target: {fileID: 4620383219311657763, guid: 319c4f0deea454b4d812bc353861bfda,
         type: 3}
       propertyPath: m_Text
-      value: '0
+      value: '10
 
 '
       objectReference: {fileID: 0}
@@ -8362,7 +8362,9 @@ PrefabInstance:
     - target: {fileID: 8014024157518775625, guid: 319c4f0deea454b4d812bc353861bfda,
         type: 3}
       propertyPath: m_Text
-      value: 0
+      value: '1
+
+'
       objectReference: {fileID: 0}
     - target: {fileID: 8069124902775737553, guid: 319c4f0deea454b4d812bc353861bfda,
         type: 3}
@@ -8746,15 +8748,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1450225755}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9831a4532851b23438c7467522e8dcb6, type: 3}
+  m_Script: {fileID: 11500000, guid: fecef6ccaf9669847b1bdf96e36befb0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  totalHealth: 1000000
+  totalHealth: 500
   value: 0
   healthTextPrefab: {fileID: 3191218632300812829, guid: 78b08a5235a7041369a7d0826eecc8d7,
     type: 3}
-  range: 0
-  damage: 0
 --- !u!114 &1450225757
 MonoBehaviour:
   m_ObjectHideFlags: 0

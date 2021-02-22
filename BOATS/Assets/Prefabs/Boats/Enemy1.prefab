@@ -98,7 +98,7 @@ MonoBehaviour:
   type: 1
   tilesWide: 2
   tilesTall: 1
-  rotation: 180
+  rotation: 270
 --- !u!114 &4413425220756343806
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -112,7 +112,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   totalHealth: 100
-  value: 25
+  value: 50
   healthTextPrefab: {fileID: 1849871718613267928, guid: c88f4841d124445d68a877093e063bf4,
     type: 3}
   damage: 10

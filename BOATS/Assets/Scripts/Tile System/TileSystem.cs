@@ -315,7 +315,7 @@ public class TileSystem : MonoBehaviour
         {
             return;
         }
-        else if (score > 100 * (_quadrantsActive+1))
+        else if (score > 200 * (_quadrantsActive+1))
         {
             _quadrantsActive++;
             _warningImage.enabled = true;
@@ -523,6 +523,12 @@ public class TileSystem : MonoBehaviour
     public void Died(GameObject deadBoat)
     {
         TileOccupier occupier = deadBoat.GetComponent<TileOccupier>();
+        if (occupier.type == TileOccupierType.Base)
+        {
+            _warningImage.enabled = true;
+            _warningText.text = "You Lost!";
+            return;
+        }
         BoatBehavior deadBehavior = deadBoat.GetComponent<BoatBehavior>();
 
         Vector2Int[] occupyingTiles = occupier.GetTilesOccupied(deadBehavior.BoatPosition);
