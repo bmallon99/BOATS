@@ -26,11 +26,13 @@ public class TileOccupier : MonoBehaviour
     //find good representation for health bar
 
     private BoatBehavior _boat;
+    private MenuInfoController _infoController;
 
     void Start()
     {
         _tileSystem = FindObjectOfType<TileSystem>();
         _boat = GetComponent<BoatBehavior>();
+        _infoController = FindObjectOfType<MenuInfoController>();
     }
 
 
@@ -104,6 +106,7 @@ public class TileOccupier : MonoBehaviour
         if (_boat.Health > 0)
         {
             _boat.Health -= damage;
+            _infoController.updateHealthText(gameObject);
             if (_boat.Health <= 0)
             {
                 _tileSystem.Died(gameObject);

@@ -29,12 +29,25 @@ public class MenuInfoController : MonoBehaviour
         _currentText = Instantiate(infoTextPrefabs[state], transform);
         if (state != MenuState.Idle && state != MenuState.HoldingNewShip)
         {
-            Text HealthText = GameObject.FindWithTag("Health Text").GetComponent<Text>();
             Text SellText = GameObject.FindWithTag("Sell Text").GetComponent<Text>();
             BoatBehavior boatBehavior = _player.selectedObject.GetComponent<BoatBehavior>();
-
-            HealthText.text = "Health: " + boatBehavior.Health.ToString();
             SellText.text = "Sell (+$" + boatBehavior.sellValue.ToString() + ")";
+            updateHealthText(_player.selectedObject);
+        }
+    }
+
+    public void updateHealthText(GameObject boat)
+    {
+        if (boat == _player.selectedObject)
+        {
+            BoatBehavior boatBehavior = boat.GetComponent<BoatBehavior>();
+            if (boatBehavior.Health <= 0)
+            {
+                _player.state = MenuState.Idle;
+                return;
+            }
+            Text HealthText = GameObject.FindWithTag("Health Text").GetComponent<Text>();
+            HealthText.text = "Health: " + boatBehavior.Health.ToString();
         }
     }
 
