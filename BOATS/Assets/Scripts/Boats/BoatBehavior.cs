@@ -45,11 +45,11 @@ public abstract class BoatBehavior : MonoBehaviour
     {
         if (MyHealthText != null)
         {
-            if (newHealth <= 0)
-            {
-                Destroy(MyHealthText);
-            }
-            else
+            //if (newHealth <= 0)
+            //{
+            //    Destroy(MyHealthText);
+            //}
+            if (newHealth > 0)
             {
                 MyHealthText.GetComponentInChildren<Text>().text = newHealth.ToString();
             }
@@ -92,5 +92,12 @@ public abstract class BoatBehavior : MonoBehaviour
     public void DestroyHealthText()
     {
         Destroy(MyHealthText);
+    }
+
+    public static void DestroyBoat(GameObject boat)
+    {
+        BoatBehavior boatBehavior = boat.GetComponent<BoatBehavior>();
+        boatBehavior.DestroyHealthText();
+        Destroy(boat);
     }
 }

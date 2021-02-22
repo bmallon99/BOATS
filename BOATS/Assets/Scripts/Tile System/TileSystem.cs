@@ -497,8 +497,9 @@ public class TileSystem : MonoBehaviour
 
         money += behavior.sellValue;
         _friendlyBoats.Remove(soldBoat);
-        
-        Destroy(soldBoat);
+
+        BoatBehavior.DestroyBoat(soldBoat);
+        //Destroy(soldBoat);
     }
 
     public void Died(GameObject deadBoat)
@@ -523,7 +524,8 @@ public class TileSystem : MonoBehaviour
             score += deadBehavior.value;
             _enemyBoats.Remove(deadBoat);
         }
-        Destroy(deadBoat);
+        //Destroy(deadBoat);
+        BoatBehavior.DestroyBoat(deadBoat);
     }
 
     // MARK - Menu On Clicks
