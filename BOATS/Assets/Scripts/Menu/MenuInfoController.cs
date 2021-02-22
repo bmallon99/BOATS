@@ -46,8 +46,12 @@ public class MenuInfoController : MonoBehaviour
                 _player.state = MenuState.Idle;
                 return;
             }
-            Text HealthText = GameObject.FindWithTag("Health Text").GetComponent<Text>();
-            HealthText.text = "Health: " + boatBehavior.Health.ToString();
+            GameObject HealthTextObject = GameObject.FindWithTag("Health Text");
+            if (HealthTextObject)
+            {
+                Text HealthText = HealthTextObject.GetComponent<Text>();
+                HealthText.text = "Health: " + boatBehavior.Health.ToString();
+            }
         }
     }
 
