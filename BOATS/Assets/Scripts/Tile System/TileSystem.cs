@@ -11,6 +11,7 @@ public class TileSystem : MonoBehaviour
     // Internal clock
     private int _ticksSinceLastSpawn;
     private int _quadrantsActive;
+    public bool isPaused;
 
     // Tile representation
     private TileOccupier[,] _tileArray;
@@ -136,29 +137,37 @@ public class TileSystem : MonoBehaviour
 
     IEnumerator MainTimerCoroutine()
     {
-        // All enemies move (and act)
-        foreach (GameObject enemy in _enemyBoats)
+        if (isPaused)
         {
-            enemy.GetComponent<BoatBehavior>().Turn();
+            yield return new WaitForSeconds(1f);
+            StartCoroutine(MainTimerCoroutine());
         }
+        else
+        {
+            // All enemies move (and act)
+            foreach (GameObject enemy in _enemyBoats)
+            {
+                enemy.GetComponent<BoatBehavior>().Turn();
+            }
 
-        CheckScore();
+            CheckScore();
 
-        // Spawning based on specified interval
-        if (_ticksSinceLastSpawn > SpawnInterval)
-        {
-            PlaceEnemyShip(EnemyBoatPrefabs[0], GetSpawnLocation());
-            _ticksSinceLastSpawn = 1;
+            // Spawning based on specified interval
+            if (_ticksSinceLastSpawn > SpawnInterval)
+            {
+                PlaceEnemyShip(EnemyBoatPrefabs[0], GetSpawnLocation());
+                _ticksSinceLastSpawn = 1;
+            }
+
+            // All friendlies check if they can fire and do so
+            foreach (GameObject friend in _friendlyBoats)
+            {
+                friend.GetComponent<BoatBehavior>().Turn();
+            }
+            _ticksSinceLastSpawn++;
+            yield return new WaitForSeconds(1f);
+            StartCoroutine(MainTimerCoroutine());
         }
-        
-        // All friendlies check if they can fire and do so
-        foreach (GameObject friend in _friendlyBoats)
-        {
-            friend.GetComponent<BoatBehavior>().Turn();
-        }
-        _ticksSinceLastSpawn++;
-        yield return new WaitForSeconds(1f);
-        StartCoroutine(MainTimerCoroutine());
     }
 
 
