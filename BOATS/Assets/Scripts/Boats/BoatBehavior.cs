@@ -49,10 +49,10 @@ public abstract class BoatBehavior : MonoBehaviour
             //{
             //    Destroy(MyHealthText);
             //}
-            if (newHealth > 0)
-            {
-                MyHealthText.GetComponentInChildren<Text>().text = newHealth.ToString();
-            }
+            //if (newHealth > 0)
+            //{
+            MyHealthText.GetComponentInChildren<Text>().text = newHealth.ToString();
+            //}
         }
     }
 
