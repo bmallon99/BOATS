@@ -55,6 +55,17 @@
                 },
                 {
                     "name": "",
+                    "id": "a18a0238-f6b7-4291-aae5-252959387537",
+                    "path": "<Keyboard>/r",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Secondary Click",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "863e15b8-3ccd-4294-b852-8f44857d26c0",
                     "path": "<Mouse>/leftButton",
                     "interactions": "",
