@@ -278,9 +278,11 @@ public class TileSystem : MonoBehaviour
         {
             _warningImage.enabled = true;
             _warningText.text = "Not Enough Money";
+            _moneyText.color = Color.red;
             yield return new WaitForSeconds(1);
             _warningText.text = "";
             _warningImage.enabled = false;
+            _moneyText.color = Color.white;
         }
     }
 
