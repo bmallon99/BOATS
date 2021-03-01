@@ -34,8 +34,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.00017548, y: -0.0000038146973}
-  m_SizeDelta: {x: 309.6004, y: 65.232315}
+  m_AnchoredPosition: {x: 0.000015259, y: -0.000013351}
+  m_SizeDelta: {x: 242.85394, y: 108.331375}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8443094255660490178
 CanvasRenderer:
@@ -77,4 +77,6 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Left Click to pick up boat
+  m_Text: 'Select boat from menu above
+
+    Press ESC to pause'

@@ -401,14 +401,14 @@ public class TileSystem : MonoBehaviour
             StartCoroutine(EnemyIncoming(1));
         }
 
-        if (score > 350 * _enemiesActive)
+        if (score > 400 * _enemiesActive)
         {
             _enemiesActive++;
         }
 
         if (SpawnInterval > 1)
         {
-            if (_enemiesActive % 3 == 0)
+            if (_enemiesActive % 4 == 0)
             {
                 SpawnInterval--;
             }
