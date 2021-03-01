@@ -15,6 +15,7 @@ public enum MenuState {
 public class PlayerControls : MonoBehaviour
 {
     public GameObject selectedObject;
+    private SpriteRenderer _selectedObjectSpriteRenderer;
     private MenuInfoController _controls;
     private MenuState _state;
     public MenuState state
@@ -91,21 +92,31 @@ public class PlayerControls : MonoBehaviour
                     TileOccupier selectedShip = _tileSystem.GetSelectedShip(tilePosition);
                     if (selectedShip != null)
                     {
+                        if (_selectedObjectSpriteRenderer != null)
+                        {
+                            _selectedObjectSpriteRenderer.color = Color.white;
+                        }
                         selectedObject = selectedShip.gameObject;
+                        _selectedObjectSpriteRenderer = selectedObject.GetComponent<SpriteRenderer>();
                         BoatBehavior boatBehavior = selectedShip.GetComponent<BoatBehavior>();
+
                         switch (boatBehavior.GetType().Name)
                         {
                             case "Defender1Behaviour":
                                 state = MenuState.SelectingDefender1;
+                                _selectedObjectSpriteRenderer.color = Color.green;
                                 break;
                             case "Defender2Behaviour":
                                 state = MenuState.SelectingDefender2;
+                                _selectedObjectSpriteRenderer.color = Color.green;
                                 break;
                             case "Defender3Behaviour":
                                 state = MenuState.SelectingDefender3;
+                                _selectedObjectSpriteRenderer.color = Color.green;
                                 break;
                             case "Defender4Behaviour":
                                 state = MenuState.SelectingDefender4;
+                                _selectedObjectSpriteRenderer.color = Color.green;
                                 break;
                             case "Enemy1Behaviour":
                                 break;
@@ -123,12 +134,15 @@ public class PlayerControls : MonoBehaviour
                         }
                     }
                 }
-                
                 break;
             default:
                 // this is for clicking out of the menu for a selected ship
                 if (_tileSystem.IsTilePointInBounds(tilePosition) && !_tileSystem.isPaused)
                 {
+                    if (_selectedObjectSpriteRenderer != null)
+                    {
+                        _selectedObjectSpriteRenderer.color = Color.white;
+                    }
                     state = MenuState.Idle;
                 }
                 break;
