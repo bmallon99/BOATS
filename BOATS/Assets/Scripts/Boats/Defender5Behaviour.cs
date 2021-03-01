@@ -3,7 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Defender5Bevahiour : BoatBehavior
+public class Defender5Behaviour : BoatBehavior
 {
     TileSystem _tileGrid;
     TileOccupier _boatTileInfo;

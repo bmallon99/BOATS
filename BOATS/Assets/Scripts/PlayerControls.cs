@@ -102,24 +102,21 @@ public class PlayerControls : MonoBehaviour
                         selectedObject = selectedShip.gameObject;
                         _selectedObjectSpriteRenderer = selectedObject.GetComponent<SpriteRenderer>();
                         BoatBehavior boatBehavior = selectedShip.GetComponent<BoatBehavior>();
+                        _selectedObjectSpriteRenderer.color = Color.green;
 
                         switch (boatBehavior.GetType().Name)
                         {
                             case "Defender1Behaviour":
                                 state = MenuState.SelectingDefender1;
-                                _selectedObjectSpriteRenderer.color = Color.green;
                                 break;
                             case "Defender2Behaviour":
                                 state = MenuState.SelectingDefender2;
-                                _selectedObjectSpriteRenderer.color = Color.green;
                                 break;
                             case "Defender3Behaviour":
                                 state = MenuState.SelectingDefender3;
-                                _selectedObjectSpriteRenderer.color = Color.green;
                                 break;
                             case "Defender4Behaviour":
                                 state = MenuState.SelectingDefender4;
-                                _selectedObjectSpriteRenderer.color = Color.green;
                                 break;
                             case "Defender5Behaviour":
                                 state = MenuState.SelectingDefender5;
