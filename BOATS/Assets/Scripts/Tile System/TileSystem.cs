@@ -11,6 +11,7 @@ public class TileSystem : MonoBehaviour
     // Internal clock
     private int _ticksSinceLastSpawn;
     private int _quadrantsActive;
+    private int _enemiesActive;
     public bool isPaused;
 
     // Tile representation
@@ -72,6 +73,7 @@ public class TileSystem : MonoBehaviour
         _selectedRangeTiles = new Vector2Int[0,0];
         _ticksSinceLastSpawn = 1;
         _quadrantsActive = 0;
+        _enemiesActive = 1;
         _friendlyBoats = new List<GameObject>();
         _enemyBoats = new List<GameObject>();
         _warningText = GameObject.Find("WarningText").GetComponent<Text>();
@@ -157,7 +159,8 @@ public class TileSystem : MonoBehaviour
             // Spawning based on specified interval
             if (_ticksSinceLastSpawn > SpawnInterval)
             {
-                PlaceEnemyShip(EnemyBoatPrefabs[0], GetSpawnLocation());
+                GameObject selectedEnemy = GetEnemyBoat();
+                PlaceEnemyShip(selectedEnemy, GetSpawnLocation(selectedEnemy));
                 _ticksSinceLastSpawn = 1;
             }
 
@@ -289,12 +292,12 @@ public class TileSystem : MonoBehaviour
     // MARK - Enemy Ship Spawning
     
 
-    public Vector2Int GetSpawnLocation()
+    public Vector2Int GetSpawnLocation(GameObject enemyBoat)
     {
         int numActive = Array.FindAll<EnemySpawnTile>(_enemySpawnTiles, t => t.Active).Length;
         int tileIndex = _random.Next(numActive);
         EnemySpawnTile tile = _enemySpawnTiles[tileIndex];
-        TileOccupier occupier = EnemyBoatPrefabs[0].GetComponent<TileOccupier>();
+        TileOccupier occupier = enemyBoat.GetComponent<TileOccupier>();
 
         switch (tile.Quadrant)
         {
@@ -306,7 +309,6 @@ public class TileSystem : MonoBehaviour
                 occupier.rotation = (OccupierRotation)90;
                 break;
                 
-
             case Quadrant.Left:
                 occupier.rotation = (OccupierRotation)180;
                 break;
@@ -320,6 +322,41 @@ public class TileSystem : MonoBehaviour
         }
 
         return tile.TilePosition;
+    }
+
+    GameObject GetEnemyBoat()
+    {
+        int enemyIndex = _random.Next(100);
+
+        switch(_enemiesActive)
+        {
+            case 1:
+                return EnemyBoatPrefabs[0];
+            case 2:
+                if (enemyIndex < 75)
+                {
+                    return EnemyBoatPrefabs[0];
+                }
+                else
+                {
+                    return EnemyBoatPrefabs[1];
+                }
+            case 3:
+                if (enemyIndex < 50)
+                {
+                    return EnemyBoatPrefabs[0];
+                }
+                else if (enemyIndex < 80)
+                {
+                    return EnemyBoatPrefabs[1];
+                }
+                else
+                {
+                    return EnemyBoatPrefabs[2];
+                }
+            default:
+                return EnemyBoatPrefabs[0];
+        }
     }
 
     void CheckScore()
