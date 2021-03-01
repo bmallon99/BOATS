@@ -9292,7 +9292,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1680130175}
-  m_RootOrder: 8
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -9471,6 +9471,7 @@ RectTransform:
   - {fileID: 401521406}
   - {fileID: 1436361969}
   - {fileID: 672029959}
+  - {fileID: 729158968}
   - {fileID: 1572513294}
   m_Father: {fileID: 0}
   m_RootOrder: 2
