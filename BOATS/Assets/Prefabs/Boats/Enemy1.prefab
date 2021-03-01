@@ -111,8 +111,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 355211656efc84d59a0cb8e8252ab8fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  range: 0
+  damage: 10
   totalHealth: 100
   value: 50
+  speed: 1
   healthTextPrefab: {fileID: 1849871718613267928, guid: c88f4841d124445d68a877093e063bf4,
     type: 3}
-  damage: 10

@@ -102,4 +102,22 @@ public abstract class BoatBehavior : MonoBehaviour
         boatBehavior.DestroyHealthText();
         Destroy(boat);
     }
+
+    // returns the next position location 
+    protected Vector2Int NextForwardPosition(TileOccupier boatTileInfo, Vector2Int currPosition)
+    {
+        switch (boatTileInfo.rotation)
+        {
+            case OccupierRotation.Zero:
+                return new Vector2Int(currPosition.x - 1, currPosition.y);
+            case OccupierRotation.Clockwise90:
+                return new Vector2Int(currPosition.x, currPosition.y + 1);
+            case OccupierRotation.Clockwise180:
+                return new Vector2Int(currPosition.x + 1, currPosition.y);
+            case OccupierRotation.Clockwise270:
+                return new Vector2Int(currPosition.x, currPosition.y - 1);
+            default:
+                throw new System.Exception("Unassigned OccupierRotation");
+        }
+    }
 }
