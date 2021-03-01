@@ -112,12 +112,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9831a4532851b23438c7467522e8dcb6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  totalHealth: 200
-  value: 100
-  healthTextPrefab: {fileID: 3191218632300812829, guid: 78b08a5235a7041369a7d0826eecc8d7,
-    type: 3}
   range: 4
   damage: 25
+  totalHealth: 200
+  value: 100
+  speed: 1
+  healthTextPrefab: {fileID: 3191218632300812829, guid: 78b08a5235a7041369a7d0826eecc8d7,
+    type: 3}
 --- !u!114 &5363897815790433573
 MonoBehaviour:
   m_ObjectHideFlags: 0
