@@ -328,7 +328,7 @@ public class TileSystem : MonoBehaviour
     {
         int enemyIndex = _random.Next(100);
 
-        switch(_enemiesActive)
+        switch (_enemiesActive)
         {
             case 1:
                 return EnemyBoatPrefabs[0];
@@ -354,23 +354,64 @@ public class TileSystem : MonoBehaviour
                 {
                     return EnemyBoatPrefabs[2];
                 }
+            case 4:
+                if (enemyIndex < 25)
+                {
+                    return EnemyBoatPrefabs[0];
+                }
+                else if (enemyIndex < 55)
+                {
+                    return EnemyBoatPrefabs[1];
+                }
+                else if (enemyIndex < 80)
+                {
+                    return EnemyBoatPrefabs[2];
+                }
+                else
+                {
+                    return EnemyBoatPrefabs[3];
+                }
             default:
-                return EnemyBoatPrefabs[0];
+                if (enemyIndex < 15)
+                {
+                    return EnemyBoatPrefabs[0];
+                }
+                else if (enemyIndex < 45)
+                {
+                    return EnemyBoatPrefabs[1];
+                }
+                else if (enemyIndex < 70)
+                {
+                    return EnemyBoatPrefabs[2];
+                }
+                else
+                {
+                    return EnemyBoatPrefabs[3];
+                }
         }
     }
 
     void CheckScore()
     {
-        if (_quadrantsActive >= 3)
-        {
-            return;
-        }
-        else if (score > 200 * (_quadrantsActive+1))
+       if (_quadrantsActive < 3 && score > 200 * (_quadrantsActive+1))
         {
             _quadrantsActive++;
             _warningImage.enabled = true;
             _warningText.text = "WARNING! Enemies Incoming";
             StartCoroutine(EnemyIncoming(1));
+        }
+
+        if (score > 350 * _enemiesActive)
+        {
+            _enemiesActive++;
+        }
+
+        if (SpawnInterval > 1)
+        {
+            if (_enemiesActive % 3 == 0)
+            {
+                SpawnInterval--;
+            }
         }
     }
 
@@ -493,7 +534,7 @@ public class TileSystem : MonoBehaviour
 
 
     // Returns true if hit something
-    public bool ApplyDamage(TileOccupierType src, Vector2Int start, Vector2Int target, int damage)
+    public bool ApplyDamage(TileOccupierType src, Vector2Int start, Vector2Int target, int damage, bool doAnimation=true)
     {
         if (IsTilePointInBounds(target) && !IsTileEmpty(target))
         {
@@ -519,17 +560,31 @@ public class TileSystem : MonoBehaviour
                     _healthText.text = currHealth.ToString();
                 }
             }
-
-            FireAnimation(start, target, () =>
+            if (doAnimation)
             {
-                // completion handler
+                FireAnimation(start, target, () =>
+                {
+                    // completion handler
+                    if (dst != null)
+                    {
+                        dst.TakeDamage(damage);
+                    }
+                });
+            }
+            else
+            {
                 if (dst != null)
                 {
                     dst.TakeDamage(damage);
                 }
-            });
-
+            }
+            
             return true;
+        }
+        else if (damage == 0 && doAnimation)
+        {
+            FireAnimation(start, target, () =>
+            { });
         }
         return false;
     }
