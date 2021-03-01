@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Enemy1Behaviour : BoatBehavior
+public class Enemy2Behaviour : BoatBehavior
 {
     private TileSystem _tileGrid;
     private TileOccupier _boatTileInfo;
@@ -17,9 +17,12 @@ public class Enemy1Behaviour : BoatBehavior
 
     public override void Turn()
     {
-        if (!Move())
+        for (int i = 0; i < 3; i++)
         {
-            Attack();
+            if (!Move())
+            {
+                Attack();
+            }
         }
     }
 
@@ -39,7 +42,8 @@ public class Enemy1Behaviour : BoatBehavior
         return false;
     }
 
-    protected override bool Attack() {
+    protected override bool Attack()
+    {
         Vector2Int nextPosition = NextForwardPosition(_boatTileInfo, BoatPosition);
         return _tileGrid.ApplyDamage(_boatTileInfo.type, BoatPosition, nextPosition, damage);
     }

@@ -115,5 +115,6 @@ MonoBehaviour:
   damage: 35
   totalHealth: 250
   value: 500
+  speed: 1
   healthTextPrefab: {fileID: 3191218632300812829, guid: 78b08a5235a7041369a7d0826eecc8d7,
     type: 3}
