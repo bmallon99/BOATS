@@ -147,6 +147,22 @@ PrefabInstance:
 
 '
       objectReference: {fileID: 0}
+    - target: {fileID: 3000447075064178553, guid: 319c4f0deea454b4d812bc353861bfda,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1540648741}
+    - target: {fileID: 3000447075064178553, guid: 319c4f0deea454b4d812bc353861bfda,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: HoldShip
+      objectReference: {fileID: 0}
+    - target: {fileID: 3000447075064178553, guid: 319c4f0deea454b4d812bc353861bfda,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
+      value: 
+      objectReference: {fileID: 5199793341005061313, guid: c0519063c7a2f4445839e49bf5c8e1d3,
+        type: 3}
     - target: {fileID: 3251234729752510336, guid: 319c4f0deea454b4d812bc353861bfda,
         type: 3}
       propertyPath: m_Pivot.x
@@ -528,6 +544,18 @@ MonoBehaviour:
   selectedObject: {fileID: 0}
   pauseMenuPrefab: {fileID: 1007240675034462467, guid: 171efafb5e22c44d09271ecc57b8bb78,
     type: 3}
+--- !u!114 &146815867 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 649531637740256101, guid: 319c4f0deea454b4d812bc353861bfda,
+    type: 3}
+  m_PrefabInstance: {fileID: 450810911}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79f0e1d84cf6f4e0e82e61641d45fe87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &245599455
 GameObject:
   m_ObjectHideFlags: 0
@@ -647,6 +675,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 322391853}
   m_CullTransparentMesh: 0
+--- !u!114 &380918409 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 649531637740256101, guid: 319c4f0deea454b4d812bc353861bfda,
+    type: 3}
+  m_PrefabInstance: {fileID: 422891302}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79f0e1d84cf6f4e0e82e61641d45fe87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &401521405
 GameObject:
   m_ObjectHideFlags: 0
@@ -740,6 +780,22 @@ PrefabInstance:
       propertyPath: m_Text
       value: 200
       objectReference: {fileID: 0}
+    - target: {fileID: 3000447075064178553, guid: 319c4f0deea454b4d812bc353861bfda,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 889656034}
+    - target: {fileID: 3000447075064178553, guid: 319c4f0deea454b4d812bc353861bfda,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: HoldShip
+      objectReference: {fileID: 0}
+    - target: {fileID: 3000447075064178553, guid: 319c4f0deea454b4d812bc353861bfda,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
+      value: 
+      objectReference: {fileID: 2235320112497654965, guid: c8fed8c75738d4d939bd41c96f7546fa,
+        type: 3}
     - target: {fileID: 3251234729752510336, guid: 319c4f0deea454b4d812bc353861bfda,
         type: 3}
       propertyPath: m_Pivot.x
@@ -922,6 +978,22 @@ PrefabInstance:
       propertyPath: m_Text
       value: 250
       objectReference: {fileID: 0}
+    - target: {fileID: 3000447075064178553, guid: 319c4f0deea454b4d812bc353861bfda,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 380918409}
+    - target: {fileID: 3000447075064178553, guid: 319c4f0deea454b4d812bc353861bfda,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: HoldShip
+      objectReference: {fileID: 0}
+    - target: {fileID: 3000447075064178553, guid: 319c4f0deea454b4d812bc353861bfda,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
+      value: 
+      objectReference: {fileID: 5781282822323371164, guid: 68c135f34d5e1ae45a0d097e9da0d98f,
+        type: 3}
     - target: {fileID: 3251234729752510336, guid: 319c4f0deea454b4d812bc353861bfda,
         type: 3}
       propertyPath: m_Pivot.x
@@ -1098,6 +1170,22 @@ PrefabInstance:
       propertyPath: m_Text
       value: 250
       objectReference: {fileID: 0}
+    - target: {fileID: 3000447075064178553, guid: 319c4f0deea454b4d812bc353861bfda,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 146815867}
+    - target: {fileID: 3000447075064178553, guid: 319c4f0deea454b4d812bc353861bfda,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: HoldShip
+      objectReference: {fileID: 0}
+    - target: {fileID: 3000447075064178553, guid: 319c4f0deea454b4d812bc353861bfda,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
+      value: 
+      objectReference: {fileID: 8833096037527419843, guid: 0b7a5c2b12f690742a39b4bf8d6e1469,
+        type: 3}
     - target: {fileID: 3251234729752510336, guid: 319c4f0deea454b4d812bc353861bfda,
         type: 3}
       propertyPath: m_Pivot.x
@@ -8838,6 +8926,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 729158967}
   m_CullTransparentMesh: 0
+--- !u!114 &759959497 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 649531637740256101, guid: 319c4f0deea454b4d812bc353861bfda,
+    type: 3}
+  m_PrefabInstance: {fileID: 1739779909}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79f0e1d84cf6f4e0e82e61641d45fe87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &765650080
 GameObject:
   m_ObjectHideFlags: 0
@@ -8895,6 +8995,22 @@ PrefabInstance:
       propertyPath: m_Text
       value: 500
       objectReference: {fileID: 0}
+    - target: {fileID: 3000447075064178553, guid: 319c4f0deea454b4d812bc353861bfda,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1027797125}
+    - target: {fileID: 3000447075064178553, guid: 319c4f0deea454b4d812bc353861bfda,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: HoldShip
+      objectReference: {fileID: 0}
+    - target: {fileID: 3000447075064178553, guid: 319c4f0deea454b4d812bc353861bfda,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
+      value: 
+      objectReference: {fileID: 2525230650869199171, guid: 7ee7cb1f780f34255963fdfad1ad68e8,
+        type: 3}
     - target: {fileID: 3251234729752510336, guid: 319c4f0deea454b4d812bc353861bfda,
         type: 3}
       propertyPath: m_Pivot.x
@@ -9054,6 +9170,18 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 775742957}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &889656034 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 649531637740256101, guid: 319c4f0deea454b4d812bc353861bfda,
+    type: 3}
+  m_PrefabInstance: {fileID: 404468839}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79f0e1d84cf6f4e0e82e61641d45fe87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &898124464
 GameObject:
   m_ObjectHideFlags: 0
@@ -9298,6 +9426,18 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 422891302}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1027797125 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 649531637740256101, guid: 319c4f0deea454b4d812bc353861bfda,
+    type: 3}
+  m_PrefabInstance: {fileID: 775742957}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79f0e1d84cf6f4e0e82e61641d45fe87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &1110432658 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3251234729752510336, guid: 319c4f0deea454b4d812bc353861bfda,
@@ -9644,6 +9784,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1538744416}
   m_CullTransparentMesh: 0
+--- !u!114 &1540648741 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 649531637740256101, guid: 319c4f0deea454b4d812bc353861bfda,
+    type: 3}
+  m_PrefabInstance: {fileID: 51469640}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79f0e1d84cf6f4e0e82e61641d45fe87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1572513293
 GameObject:
   m_ObjectHideFlags: 0
@@ -9879,6 +10031,22 @@ PrefabInstance:
       propertyPath: m_Text
       value: 1000
       objectReference: {fileID: 0}
+    - target: {fileID: 3000447075064178553, guid: 319c4f0deea454b4d812bc353861bfda,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 759959497}
+    - target: {fileID: 3000447075064178553, guid: 319c4f0deea454b4d812bc353861bfda,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: HoldShip
+      objectReference: {fileID: 0}
+    - target: {fileID: 3000447075064178553, guid: 319c4f0deea454b4d812bc353861bfda,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
+      value: 
+      objectReference: {fileID: 3846173873114578306, guid: 9c01283fd9f5d4423a994d8c1f4c32ca,
+        type: 3}
     - target: {fileID: 3251234729752510336, guid: 319c4f0deea454b4d812bc353861bfda,
         type: 3}
       propertyPath: m_Pivot.x
