@@ -22,6 +22,7 @@ public class ShipMenuSelector : MonoBehaviour
     public void HoldShip(GameObject shipPrefab)
     {
         bool differentShip = _myShip != _player.selectedObject;
+        _player.SetSelectedShipWhite();
         // hold new ship
         if (_player.state != MenuState.HoldingNewShip || differentShip)
         {

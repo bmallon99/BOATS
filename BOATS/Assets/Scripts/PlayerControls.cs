@@ -95,10 +95,7 @@ public class PlayerControls : MonoBehaviour
                     TileOccupier selectedShip = _tileSystem.GetSelectedShip(tilePosition);
                     if (selectedShip != null)
                     {
-                        if (_selectedObjectSpriteRenderer != null)
-                        {
-                            _selectedObjectSpriteRenderer.color = Color.white;
-                        }
+                        SetSelectedShipWhite();
                         selectedObject = selectedShip.gameObject;
                         _selectedObjectSpriteRenderer = selectedObject.GetComponent<SpriteRenderer>();
                         BoatBehavior boatBehavior = selectedShip.GetComponent<BoatBehavior>();
@@ -149,15 +146,20 @@ public class PlayerControls : MonoBehaviour
                 // this is for clicking out of the menu for a selected ship
                 if (_tileSystem.IsTilePointInBounds(tilePosition) && !_tileSystem.isPaused)
                 {
-                    if (_selectedObjectSpriteRenderer != null)
-                    {
-                        _selectedObjectSpriteRenderer.color = Color.white;
-                    }
+                    SetSelectedShipWhite();
                     state = MenuState.Idle;
                 }
                 break;
         }
         
+    }
+
+    public void SetSelectedShipWhite()
+    {
+        if (_selectedObjectSpriteRenderer != null)
+        {
+            _selectedObjectSpriteRenderer.color = Color.white;
+        }
     }
 
     public void OnSecondaryClick()
