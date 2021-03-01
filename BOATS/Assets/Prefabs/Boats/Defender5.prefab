@@ -114,6 +114,6 @@ MonoBehaviour:
   range: 8
   damage: 50
   totalHealth: 100
-  value: 100
+  value: 250
   healthTextPrefab: {fileID: 3191218632300812829, guid: 78b08a5235a7041369a7d0826eecc8d7,
     type: 3}

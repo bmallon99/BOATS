@@ -10,6 +10,7 @@ public enum MenuState {
     SelectingDefender2,
     SelectingDefender3,
     SelectingDefender4,
+    SelectingDefender5,
 }
 
 public class PlayerControls : MonoBehaviour
@@ -106,6 +107,9 @@ public class PlayerControls : MonoBehaviour
                                 break;
                             case "Defender4Behaviour":
                                 state = MenuState.SelectingDefender4;
+                                break;
+                            case "Defender5Behvaiour":
+                                state = MenuState.SelectingDefender5;
                                 break;
                             case "Enemy1Behaviour":
                                 break;
