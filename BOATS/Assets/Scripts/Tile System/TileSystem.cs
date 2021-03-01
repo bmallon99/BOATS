@@ -410,6 +410,7 @@ public class TileSystem : MonoBehaviour
         {
             if (_enemiesActive % 4 == 0)
             {
+                _enemiesActive++;
                 SpawnInterval--;
             }
         }
