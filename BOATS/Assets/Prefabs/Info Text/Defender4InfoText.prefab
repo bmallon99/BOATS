@@ -223,7 +223,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "Defender 4: \nDamage: 20\n"
+  m_Text: "Two Way Defender: \nDamage: 20\n"
 --- !u!1 &4294130411776576916
 GameObject:
   m_ObjectHideFlags: 0

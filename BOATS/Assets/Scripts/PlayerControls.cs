@@ -11,6 +11,7 @@ public enum MenuState {
     SelectingDefender3,
     SelectingDefender4,
     SelectingDefender5,
+    SelectingDefender6,
 }
 
 public class PlayerControls : MonoBehaviour
@@ -120,8 +121,11 @@ public class PlayerControls : MonoBehaviour
                                 state = MenuState.SelectingDefender4;
                                 _selectedObjectSpriteRenderer.color = Color.green;
                                 break;
-                            case "Defender5Behvaiour":
+                            case "Defender5Behaviour":
                                 state = MenuState.SelectingDefender5;
+                                break;
+                            case "Defender6Behaviour":
+                                state = MenuState.SelectingDefender6;
                                 break;
                             case "Enemy1Behaviour":
                                 break;

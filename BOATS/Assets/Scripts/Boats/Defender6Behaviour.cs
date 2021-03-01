@@ -24,7 +24,6 @@ public class Defender6Behaviour : BoatBehavior
     {
         if (Random.Range(0f, 1f) < probability && lastSpawnedMoney == null)
         {
-            Debug.Log(MoneyPosition());
             lastSpawnedMoney = Instantiate(moneyPrefab, MoneyPosition(), new Quaternion(), moneyParent.transform);
         }
     }

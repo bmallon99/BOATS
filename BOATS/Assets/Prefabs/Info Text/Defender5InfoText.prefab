@@ -223,7 +223,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "Defender 5: \nDamage: 50\n"
+  m_Text: "Piercing Defender: \nDamage: 50\n"
 --- !u!1 &4294130411776576916
 GameObject:
   m_ObjectHideFlags: 0

@@ -156,7 +156,7 @@ GameObject:
   - component: {fileID: 2869052216433816686}
   - component: {fileID: 2869052216433816685}
   m_Layer: 5
-  m_Name: 'Defender2InfoText '
+  m_Name: Defender6InfoText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -223,7 +223,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "Wall Defender: \nDamage: 10\n"
+  m_Text: "Money Defender: \nDamage: 0\n"
 --- !u!1 &4294130411776576916
 GameObject:
   m_ObjectHideFlags: 0
@@ -301,7 +301,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Health: 200'
+  m_Text: 'Health: 100
+
+'
 --- !u!1 &8447374090144433385
 GameObject:
   m_ObjectHideFlags: 0
