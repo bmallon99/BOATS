@@ -7,7 +7,8 @@ public enum MenuState {
     Idle,
     HoldingNewShip,
     SelectingDefender1,
-    SelectingDefender2
+    SelectingDefender2,
+    SelectingDefender3,
 }
 
 public class PlayerControls : MonoBehaviour
@@ -30,12 +31,18 @@ public class PlayerControls : MonoBehaviour
     private TileSystem _tileSystem;
     public Vector3 worldMousePosition => Camera.main.ScreenToWorldPoint(Pointer.current.position.ReadValue());
 
+    // pause menu variables
+    public GameObject pauseMenuPrefab;
+    private GameObject _pauseMenuParent;
+    private GameObject _pauseMenu;
+
     // Start is called before the first frame update
     void Start()
     {
         _tileSystem = FindObjectOfType<TileSystem>();
         _controls = FindObjectOfType<MenuInfoController>();
         state = MenuState.Idle;
+        _pauseMenuParent = GameObject.FindGameObjectWithTag("Pause Menu");
     }
 
     // Update is called once per frame
@@ -93,6 +100,9 @@ public class PlayerControls : MonoBehaviour
                             case "Defender2Behaviour":
                                 state = MenuState.SelectingDefender2;
                                 break;
+                            case "Defender3Behaviour":
+                                state = MenuState.SelectingDefender3;
+                                break;
                             case "Enemy1Behaviour":
                                 break;
                             case "BaseBehaviour":
@@ -107,7 +117,7 @@ public class PlayerControls : MonoBehaviour
                 break;
             default:
                 // this is for clicking out of the menu for a selected ship
-                if (_tileSystem.IsTilePointInBounds(tilePosition))
+                if (_tileSystem.IsTilePointInBounds(tilePosition) && !_tileSystem.isPaused)
                 {
                     state = MenuState.Idle;
                 }
@@ -130,5 +140,33 @@ public class PlayerControls : MonoBehaviour
             BoatBehavior behavior = selectedObject.GetComponent<BoatBehavior>();
             _tileSystem.SelectTiles(occupier.GetTilesOccupied(tilePosition), behavior.GetFiringRange(occupier.GetFocusCoordinate(tilePosition)));
         }
+    }
+
+    // toggle pause menu
+    public void OnMenuPress()
+    {
+        // pause
+        if (!_tileSystem.isPaused)
+        {
+            _tileSystem.isPaused = true;
+            if (_pauseMenu == null)
+            {
+                _pauseMenu = Instantiate(pauseMenuPrefab, _pauseMenuParent.transform);
+            } else
+            {
+                _pauseMenu.SetActive(true);
+            }
+        }
+        // resume
+        else
+        {
+            ResumeGame();
+        }
+    }
+
+    public void ResumeGame()
+    {
+        _pauseMenu.SetActive(false);
+        _tileSystem.isPaused = false;
     }
 }

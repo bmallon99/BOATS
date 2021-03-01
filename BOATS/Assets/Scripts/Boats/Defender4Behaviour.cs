@@ -1,10 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Tilemaps;
 
-
-public class Defender2Behaviour : BoatBehavior
+public class Defender4Behaviour : BoatBehavior
 {
     TileSystem _tileGrid;
     TileOccupier _boatTileInfo;

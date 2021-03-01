@@ -17,6 +17,8 @@ public abstract class BoatBehavior : MonoBehaviour
         throw new NotImplementedException();
     }
 
+    public int range;
+    public int damage;
     public int totalHealth;
     public int value;
     public int sellValue

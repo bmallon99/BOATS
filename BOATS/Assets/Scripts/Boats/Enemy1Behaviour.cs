@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class Enemy1Behaviour : BoatBehavior
 {
-    public int damage;
     private TileSystem _tileGrid;
     private TileOccupier _boatTileInfo;
 

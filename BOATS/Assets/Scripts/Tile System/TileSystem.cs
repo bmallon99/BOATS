@@ -32,6 +32,7 @@ public class TileSystem : MonoBehaviour
     private Text _warningText;
     private Text _moneyText;
     private Text _scoreText;
+    private Text _healthText;
 
     // Curreny and Score
     private int _score;
@@ -76,6 +77,7 @@ public class TileSystem : MonoBehaviour
         _warningText = GameObject.Find("WarningText").GetComponent<Text>();
         _moneyText = GameObject.Find("CurrentMoney").GetComponent<Text>();
         _scoreText = GameObject.Find("CurrentScore").GetComponent<Text>();
+        _healthText = GameObject.Find("CurrentHealth").GetComponent<Text>();
         _warningImage = GameObject.Find("WarningBackground").GetComponent<Image>();
 
         // Clear Tile Flags
@@ -197,7 +199,7 @@ public class TileSystem : MonoBehaviour
                 money -= newShipBehavior.value;
                 GameObject newShip = Instantiate(boatPrefab, boatPosition, Quaternion.Euler(Vector3.back * (int)occupier.rotation));
                 TileOccupier newShipOccupier = newShip.GetComponent<TileOccupier>();
-          
+
                 _friendlyBoats.Add(newShip);               
 
                 foreach (Vector2Int tile in occupyingTiles)
@@ -464,6 +466,19 @@ public class TileSystem : MonoBehaviour
             else if (src == TileOccupierType.Friendly && dst.type == TileOccupierType.Base)
             {
                 return false;
+            } 
+            else if (dst.type == TileOccupierType.Base)
+            {
+                int currHealth = Int32.Parse(_healthText.text);
+                currHealth -= damage;
+                if (currHealth <= 0)
+                {
+                    _healthText.text = "0";
+                }
+                else
+                {
+                    _healthText.text = currHealth.ToString();
+                }
             }
 
             FireAnimation(start, target, () =>
