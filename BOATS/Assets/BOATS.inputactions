@@ -28,6 +28,14 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "MenuPress",
+                    "type": "Button",
+                    "id": "bf3e9fa2-7cdf-4cee-95c9-ec17380b1766",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -72,6 +80,17 @@
                     "processors": "",
                     "groups": "Keyboard&Mouse",
                     "action": "Primary Click",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "86222fba-f807-4b57-a23d-18eb47080300",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "MenuPress",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

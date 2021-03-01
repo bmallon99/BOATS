@@ -11,6 +11,7 @@ TagManager:
   - Base
   - Sell Text
   - Health Text
+  - Pause Menu
   layers:
   - Default
   - TransparentFX
