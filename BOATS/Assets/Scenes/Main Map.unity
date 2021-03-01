@@ -9556,8 +9556,7 @@ MonoBehaviour:
   damage: 0
   totalHealth: 500
   value: 0
-  healthTextPrefab: {fileID: 3191218632300812829, guid: 78b08a5235a7041369a7d0826eecc8d7,
-    type: 3}
+  healthTextPrefab: {fileID: 0}
 --- !u!114 &1450225757
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9573,7 +9572,7 @@ MonoBehaviour:
   type: 2
   tilesWide: 6
   tilesTall: 6
-  rotation: 0
+  rotation: 90
 --- !u!4 &1450225758
 Transform:
   m_ObjectHideFlags: 0

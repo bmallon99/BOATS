@@ -92,7 +92,7 @@ public class TileSystem : MonoBehaviour
         }
 
         TileOccupier baseOccupier = GameObject.FindGameObjectWithTag("Base").GetComponent<TileOccupier>();
-        baseOccupier.GetComponent<BoatBehavior>().InitBoat(new Vector2Int(13, 9));
+        // Don't call InitBoat() becuase it doesn't need a health bar or "BoatPosition" to be set 
         // Make the base tiles occupied
         for (int x = 13; x <= 18; x++)
         {

@@ -75,17 +75,19 @@ public abstract class BoatBehavior : MonoBehaviour
     // probably temporary
     protected virtual Vector3 AdjustDamageBarPosition(Vector3 pos)
     {
-        float adjustment = 1.0f;
+        //float adjustment = 1.0f;
+        float width = (float)myTileOccupier.tilesWide;
+        float height = (float)myTileOccupier.tilesTall;
         switch (myTileOccupier.rotation)
         {
             case OccupierRotation.Zero:
-                return new Vector3(pos.x + adjustment, pos.y - (0.5f * adjustment));
+                return new Vector3(pos.x + (width / 2f), pos.y - 0.5f);
             case OccupierRotation.Clockwise90:
-                return new Vector3(pos.x + (0.5f * adjustment), pos.y - (2.5f * adjustment));
+                return new Vector3(pos.x + (height / 2f), pos.y - width - 0.5f);
             case OccupierRotation.Clockwise180:
-                return new Vector3(pos.x - adjustment, pos.y - (1.5f * adjustment));
+                return new Vector3(pos.x - (width / 2f), pos.y - height - 0.5f);
             case OccupierRotation.Clockwise270:
-                return new Vector3(pos.x - (0.5f * adjustment), pos.y - (0.5f * adjustment));
+                return new Vector3(pos.x - (height / 2f), pos.y - 0.5f);
             default:
                 return pos;
         }
