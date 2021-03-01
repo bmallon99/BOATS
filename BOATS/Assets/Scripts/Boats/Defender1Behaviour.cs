@@ -6,8 +6,6 @@ using UnityEngine.Tilemaps;
 
 public class Defender1Behaviour : BoatBehavior
 {
-    public int range;
-    public int damage;
     TileSystem _tileGrid;
     TileOccupier _boatTileInfo;
     // Start is called before the first frame update
