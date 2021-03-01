@@ -328,7 +328,7 @@ public class TileSystem : MonoBehaviour
     {
         int enemyIndex = _random.Next(100);
 
-        switch(_enemiesActive)
+        switch (_enemiesActive)
         {
             case 1:
                 return EnemyBoatPrefabs[0];

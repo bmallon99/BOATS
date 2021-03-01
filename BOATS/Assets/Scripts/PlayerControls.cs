@@ -109,6 +109,12 @@ public class PlayerControls : MonoBehaviour
                                 break;
                             case "Enemy1Behaviour":
                                 break;
+                            case "Enemy2Behaviour":
+                                break;
+                            case "Enemy3Behaviour":
+                                break;
+                            case "Enemy4Behaviour":
+                                break;
                             case "BaseBehaviour":
                                 break;
                             default:

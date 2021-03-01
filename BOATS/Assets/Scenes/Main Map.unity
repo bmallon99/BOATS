@@ -8710,6 +8710,7 @@ MonoBehaviour:
   - {fileID: 5567843318003924298, guid: 18f325b596a73ee488147ac3944ad0de, type: 3}
   - {fileID: 5080026841246310667, guid: 5c25c8c89540d497d8dff142c3f8f72a, type: 3}
   - {fileID: 5767556414470071172, guid: 1e1ddb6830d2cc94e970c4c3889c535b, type: 3}
+  - {fileID: 397440710019689433, guid: a3a84e81cd81044e5ab1de25c771e395, type: 3}
   bulletPrefab: {fileID: 3512853659860519963, guid: 429995a101b474de68b27841862898e4,
     type: 3}
 --- !u!1 &672029958
@@ -9675,7 +9676,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.075195, y: 0}
+  m_AnchoredPosition: {x: -9.645, y: 0}
   m_SizeDelta: {x: 1279.8501, y: 719.99945}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1625492209
