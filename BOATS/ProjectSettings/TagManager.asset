@@ -12,6 +12,7 @@ TagManager:
   - Sell Text
   - Health Text
   - Pause Menu
+  - Money Layer
   layers:
   - Default
   - TransparentFX

@@ -49,7 +49,7 @@ public class PlayerControls : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public void OnMouseMoved(InputValue positionValue)
@@ -84,6 +84,7 @@ public class PlayerControls : MonoBehaviour
                     _tileSystem.SelectTiles(new Vector2Int[0], new Vector2Int[0, 0]);
                 }
                 break;
+
             case MenuState.Idle:
                 // if you aren't holding something, you probably want to see info about a ship
                 if (_tileSystem.IsTilePointInBounds(tilePosition))
