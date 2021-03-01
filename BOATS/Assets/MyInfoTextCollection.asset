@@ -25,3 +25,9 @@ MonoBehaviour:
   - state: 3
     infoTextPrefab: {fileID: 2869052216433816675, guid: 6b0337229b6174d999f36f965f3f5cdf,
       type: 3}
+  - state: 4
+    infoTextPrefab: {fileID: 2869052216433816675, guid: 78b02de9f78b9f648b53bc06846b9d20,
+      type: 3}
+  - state: 5
+    infoTextPrefab: {fileID: 2869052216433816675, guid: fa656dfac7a08394ab64b1e4faa1c61d,
+      type: 3}
