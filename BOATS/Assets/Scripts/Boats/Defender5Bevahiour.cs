@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -24,20 +25,29 @@ public class Defender5Bevahiour : BoatBehavior
     {
         bool attackSuccessful = false;
         Vector2Int[,] firingRange = GetFiringRange(_tileGrid.WorldToTilePoint(transform.position));
+        int[] fired = new int[range];
 
-        for (int gun = 0; gun < _boatTileInfo.tilesTall; gun++)
+        // do all damage first, finding all targets hit
+        for (int i = 0; i < range; i++)
         {
-            for (int i = 0; i < range; i++)
+            if (_tileGrid.ApplyDamage(_boatTileInfo.type,
+                                        firingRange[0, 0],
+                                        firingRange[0, i],
+                                        damage, false))
             {
-                if (_tileGrid.ApplyDamage(_boatTileInfo.type,
-                                          firingRange[gun, 0],
-                                          firingRange[gun, i],
-                                          damage))
-                {
-                    attackSuccessful = true;
-                }
+                fired[i] = i;
+                attackSuccessful = true;
             }
         }
+        // do animation, but no damage
+        if (attackSuccessful)
+        {
+            _tileGrid.ApplyDamage(_boatTileInfo.type,
+                                firingRange[0, 0],
+                                firingRange[0, fired.Max()],
+                                0);
+        }
+        
         return attackSuccessful;
     }
 

@@ -493,7 +493,7 @@ public class TileSystem : MonoBehaviour
 
 
     // Returns true if hit something
-    public bool ApplyDamage(TileOccupierType src, Vector2Int start, Vector2Int target, int damage)
+    public bool ApplyDamage(TileOccupierType src, Vector2Int start, Vector2Int target, int damage, bool doAnimation=true)
     {
         if (IsTilePointInBounds(target) && !IsTileEmpty(target))
         {
@@ -519,17 +519,31 @@ public class TileSystem : MonoBehaviour
                     _healthText.text = currHealth.ToString();
                 }
             }
-
-            FireAnimation(start, target, () =>
+            if (doAnimation)
             {
-                // completion handler
+                FireAnimation(start, target, () =>
+                {
+                    // completion handler
+                    if (dst != null)
+                    {
+                        dst.TakeDamage(damage);
+                    }
+                });
+            }
+            else
+            {
                 if (dst != null)
                 {
                     dst.TakeDamage(damage);
                 }
-            });
-
+            }
+            
             return true;
+        }
+        else if (damage == 0 && doAnimation)
+        {
+            FireAnimation(start, target, () =>
+            { });
         }
         return false;
     }
