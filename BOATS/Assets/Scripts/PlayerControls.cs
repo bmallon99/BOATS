@@ -102,9 +102,13 @@ public class PlayerControls : MonoBehaviour
                         selectedObject = selectedShip.gameObject;
                         _selectedObjectSpriteRenderer = selectedObject.GetComponent<SpriteRenderer>();
                         BoatBehavior boatBehavior = selectedShip.GetComponent<BoatBehavior>();
-                        _selectedObjectSpriteRenderer.color = Color.green;
+                        TileOccupier selectedTileOccupier = selectedObject.GetComponent<TileOccupier>();
+                        if (selectedTileOccupier != null && selectedTileOccupier.type == TileOccupierType.Friendly)
+                        {
+                            _selectedObjectSpriteRenderer.color = Color.green;
+                        }
 
-                        switch (boatBehavior.GetType().Name)
+                            switch (boatBehavior.GetType().Name)
                         {
                             case "Defender1Behaviour":
                                 state = MenuState.SelectingDefender1;
