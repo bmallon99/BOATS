@@ -31,4 +31,8 @@ public class StartMenuButtonController : MonoBehaviour
     {
         _player.ResumeGame();
     }
+    public void QuitGame()
+    {
+        Application.Quit();
+    }
 }
