@@ -22,6 +22,11 @@ public class StartMenuButtonController : MonoBehaviour
         SceneManager.LoadScene("Instructions");
     }
 
+    public void GoToInstructions2()
+    {
+        SceneManager.LoadScene("Instructions2");
+    }
+
     public void GoToStartMenu()
     {
         SceneManager.LoadScene("Start Menu");
