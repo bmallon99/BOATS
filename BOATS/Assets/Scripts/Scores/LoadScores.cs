@@ -6,11 +6,12 @@ using UnityEngine.UI;
 public class LoadScores : MonoBehaviour
 {
 
+    public GameObject[] entries;
     // Start is called before the first frame update
     void Start()
     {
         ScoreEntry[] fuckYou = ScoresData.scores;
-        GameObject[] entries = GameObject.FindGameObjectsWithTag("Score Entry");
+        //GameObject[] entries = GameObject.FindGameObjectsWithTag("Score Entry");
         for (int i = 0; i < 5; i++)
         {
             FillFields(entries[i], ScoresData.scores[i]);

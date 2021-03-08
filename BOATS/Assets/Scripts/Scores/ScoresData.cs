@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using System;
 
 public struct ScoreEntry
 {
@@ -19,6 +20,7 @@ public struct ScoreEntry
 
 public static class ScoresData
 {
+
     public static ScoreEntry[] scores = new ScoreEntry[5];
     public static int finalScore = 0;
     public static bool doInit = true;
