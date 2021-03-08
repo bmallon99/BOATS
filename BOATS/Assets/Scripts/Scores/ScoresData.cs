@@ -29,7 +29,7 @@ public static class ScoresData
         {
             AddScore(new ScoreEntry(30000, "MVJ", false));
             AddScore(new ScoreEntry(4000, "JHW", false));
-            AddScore(new ScoreEntry(20000, "AH", false));
+            AddScore(new ScoreEntry(88180, "AH", false));
             scores[3] = new ScoreEntry(0, "___", false);
             scores[4] = new ScoreEntry(0, "___", false);
             doInit = false;
