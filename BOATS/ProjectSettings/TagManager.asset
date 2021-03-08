@@ -13,6 +13,8 @@ TagManager:
   - Health Text
   - Pause Menu
   - Money Layer
+  - Score Entry
+  - Current Score
   layers:
   - Default
   - TransparentFX

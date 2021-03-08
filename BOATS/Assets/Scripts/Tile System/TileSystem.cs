@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 using UnityEngine.UI;
 using System.Linq;
+using UnityEngine.SceneManagement;
 
 public class TileSystem : MonoBehaviour
 {
@@ -67,6 +68,7 @@ public class TileSystem : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        ScoresData.InitScores();
         _tileArray = new TileOccupier[TileConstants.TileMapWidth, TileConstants.TileMapHeight];
         _tilemap = GetComponent<Tilemap>();
         _selectedTiles = new Vector2Int[0];
@@ -646,6 +648,9 @@ public class TileSystem : MonoBehaviour
         {
             _warningImage.enabled = true;
             _warningText.text = "You Lost!";
+            ScoresData.AddScore(new ScoreEntry(score, "___", true));
+            ScoresData.SetFinalScore(score);
+            SceneManager.LoadScene("GameOver");
             return;
         }
         BoatBehavior deadBehavior = deadBoat.GetComponent<BoatBehavior>();
