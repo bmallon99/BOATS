@@ -103,7 +103,7 @@ public class TileSystem : MonoBehaviour
         }
 
         // Starting Money
-        money = 200;
+        money = 300;
         score = 0;
 
         _InitEnemySpawnTiles();
@@ -355,7 +355,7 @@ public class TileSystem : MonoBehaviour
                     return EnemyBoatPrefabs[2];
                 }
             case 4:
-                if (enemyIndex < 25)
+                if (enemyIndex < 20)
                 {
                     return EnemyBoatPrefabs[0];
                 }
@@ -376,11 +376,11 @@ public class TileSystem : MonoBehaviour
                 {
                     return EnemyBoatPrefabs[0];
                 }
-                else if (enemyIndex < 45)
+                else if (enemyIndex < 35)
                 {
                     return EnemyBoatPrefabs[1];
                 }
-                else if (enemyIndex < 70)
+                else if (enemyIndex < 65)
                 {
                     return EnemyBoatPrefabs[2];
                 }
@@ -552,6 +552,7 @@ public class TileSystem : MonoBehaviour
             {
                 int currHealth = Int32.Parse(_healthText.text);
                 currHealth -= damage;
+                StartCoroutine(BaseTookDamage());
                 if (currHealth <= 0)
                 {
                     _healthText.text = "0";
@@ -588,6 +589,13 @@ public class TileSystem : MonoBehaviour
             { });
         }
         return false;
+    }
+
+    IEnumerator BaseTookDamage()
+    { 
+        _healthText.color = Color.red;
+        yield return new WaitForSeconds(0.5f);
+        _healthText.color = Color.white; 
     }
 
     private void FireAnimation(Vector2Int start, Vector2Int target, Action completionHandler)

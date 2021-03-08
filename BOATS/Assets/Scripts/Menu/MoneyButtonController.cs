@@ -16,6 +16,7 @@ public class MoneyButtonController : MonoBehaviour
     public void HandleClick()
     {
         tileSystem.money += value;
+        tileSystem.score += value;
         Destroy(gameObject);
     }
 }
