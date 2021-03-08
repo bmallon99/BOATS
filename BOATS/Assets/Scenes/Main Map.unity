@@ -659,7 +659,7 @@ PrefabInstance:
     - target: {fileID: 4620383219311657763, guid: 319c4f0deea454b4d812bc353861bfda,
         type: 3}
       propertyPath: m_Text
-      value: 35
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 5623121453600333856, guid: 319c4f0deea454b4d812bc353861bfda,
         type: 3}
@@ -8971,7 +8971,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 200
+  m_Text: 300
 --- !u!222 &959372494
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -8995,7 +8995,7 @@ PrefabInstance:
     - target: {fileID: 2639816630223658739, guid: 319c4f0deea454b4d812bc353861bfda,
         type: 3}
       propertyPath: m_Text
-      value: 1000
+      value: 600
       objectReference: {fileID: 0}
     - target: {fileID: 3000447075064178553, guid: 319c4f0deea454b4d812bc353861bfda,
         type: 3}

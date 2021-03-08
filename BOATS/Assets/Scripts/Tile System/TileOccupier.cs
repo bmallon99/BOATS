@@ -103,7 +103,7 @@ public class TileOccupier : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        if (_boat.Health > 0)
+        if (_boat != null && _boat.Health > 0)
         {
             _boat.Health -= damage;
             _infoController.updateHealthText(gameObject);

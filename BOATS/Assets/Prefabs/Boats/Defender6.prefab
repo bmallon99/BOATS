@@ -114,7 +114,7 @@ MonoBehaviour:
   range: 0
   damage: 0
   totalHealth: 100
-  value: 1000
+  value: 600
   healthTextPrefab: {fileID: 3191218632300812829, guid: 78b08a5235a7041369a7d0826eecc8d7,
     type: 3}
   probability: 0.2
