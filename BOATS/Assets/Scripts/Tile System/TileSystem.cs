@@ -662,7 +662,10 @@ public class TileSystem : MonoBehaviour
 
         foreach (Vector2Int tile in occupyingTiles)
         {
-            _tileArray[tile.x, tile.y] = null;
+            if (IsTilePointInBounds(tile))
+            {
+                _tileArray[tile.x, tile.y] = null;
+            }
         }
 
         if (occupier.type == TileOccupierType.Friendly)
